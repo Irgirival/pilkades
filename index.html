@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pemilihan Kepala Desa Kasomalang Kulon 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     DATA CALON — EDIT DI SINI SESUAI PENETAPAN RESMI PANITIA
+     - nama & moto: ganti dengan data resmi setelah nomor urut ditetapkan
+     - foto: kosongkan "" untuk avatar inisial, atau isi dengan
+       data URI base64 (contoh: "data:image/jpeg;base64,....") jika
+       ingin memasang foto asli calon
+     ============================================================ */
+  </style>
+<script>
+  window.CANDIDATES = [
+    { no: 1, nama: "Nama Calon 1", moto: "Isi visi/moto calon nomor 1 di sini", foto: "" },
+    { no: 2, nama: "Nama Calon 2", moto: "Isi visi/moto calon nomor 2 di sini", foto: "" },
+    { no: 3, nama: "Nama Calon 3", moto: "Isi visi/moto calon nomor 3 di sini", foto: "" }
+  ];
+  window.DESA_NAME = "Kasomalang Kulon";
+  window.KEC_NAME = "Kecamatan Kasomalang, Kabupaten Subang";
+  window.PIN_PANITIA = "2026"; // PIN sederhana untuk membuka rekapitulasi
+</script>
+<style>
+  :root{
+    --paper:#EFE7D4;
+    --paper-2:#E5DCC5;
+    --ink:#241F17;
+    --ink-soft:#5A5142;
+    --merah:#9E1B26;
+    --merah-dark:#7A1420;
+    --wood:#5B3A28;
+    --gold:#B08A2E;
+    --hijau:#2E5B41;
+    --line: rgba(36,31,23,0.22);
+    font-size: 16px;
+  }
+  [data-theme="dark"]{
+    --paper:#1E1A14;
+    --paper-2:#26211A;
+    --ink:#F1EAD9;
+    --ink-soft:#C9BEA7;
+    --line: rgba(241,234,217,0.2);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#1E1A14;
+      --paper-2:#26211A;
+      --ink:#F1EAD9;
+      --ink-soft:#C9BEA7;
+      --line: rgba(241,234,217,0.2);
+    }
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Public Sans", ui-sans-serif, system-ui, sans-serif;
+    height:100vh;
+    height:100dvh;
+    width:100vw;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    justify-content:flex-start;
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1,h2,h3{
+    font-family:"Fraunces", Georgia, serif;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .app{
+    width:100%;
+    height:100%;
+    max-width:none;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+  .app-body{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    width:100%;
+    max-width:1040px;
+    margin:0 auto;
+    padding:22px 20px 40px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+
+  /* ---------- HEADER LETTERKOP ---------- */
+  .letterhead{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:16px max(20px, 4vw);
+    border-bottom:3px solid var(--merah);
+    flex-shrink:0;
+  }
+  .letterhead .fs-btn{
+    margin-left:auto;
+    background:none;
+    border:2px solid var(--line);
+    color:var(--ink-soft);
+    border-radius:8px;
+    padding:8px 10px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    flex-shrink:0;
+  }
+  .letterhead .fs-btn:hover{border-color:var(--ink);color:var(--ink);}
+  .letterhead .fs-btn svg{width:18px;height:18px;}
+  .seal{
+    width:56px;height:56px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #cdaa4c, var(--gold));
+    display:flex;align-items:center;justify-content:center;
+    color:#2b2109;font-family:"Fraunces",serif;font-weight:700;font-size:1.1rem;
+    border:2px solid rgba(0,0,0,0.15);
+    flex-shrink:0;
+  }
+  .letterhead .titles{line-height:1.25;}
+  .letterhead .eyebrow{
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  .letterhead h1{font-size:1.32rem;font-weight:700;}
+  .letterhead .place{font-size:0.85rem;color:var(--ink-soft);margin-top:2px;}
+
+  /* ---------- SCREENS ---------- */
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  /* ---------- WELCOME ---------- */
+  .welcome{
+    text-align:center;
+    padding:36px 20px 10px;
+  }
+  .welcome .ballot-icon{
+    width:110px;height:110px;margin:0 auto 22px;
+    border:3px solid var(--wood);
+    border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--paper-2);
+    position:relative;
+  }
+  .welcome .ballot-icon svg{width:56px;height:56px;}
+  .welcome-sub{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin:0 0 18px;
+    line-height:1.5;
+  }
+  .welcome h2{font-size:2rem;line-height:1.15;margin-bottom:8px;}
+  .welcome p{
+    color:var(--ink-soft);
+    font-size:1rem;
+    max-width:480px;
+    margin:0 auto 28px;
+    line-height:1.55;
+  }
+  .btn{
+    font-family:"Public Sans",sans-serif;
+    font-weight:700;
+    font-size:1.02rem;
+    border:none;
+    border-radius:10px;
+    padding:16px 30px;
+    cursor:pointer;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{
+    background:var(--merah);
+    color:#fff;
+    box-shadow:0 3px 0 var(--merah-dark);
+  }
+  .btn-primary:hover{background:var(--merah-dark);}
+  .btn-outline{
+    background:transparent;
+    border:2px solid var(--line);
+    color:var(--ink);
+  }
+  .btn-outline:hover{border-color:var(--ink);}
+  .btn-ghost{
+    background:none;border:none;color:var(--ink-soft);
+    font-size:0.85rem;text-decoration:underline;cursor:pointer;
+    font-family:"Public Sans",sans-serif;
+  }
+
+  /* ---------- VOTING SCREEN ---------- */
+  .instruksi{
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .instruksi h2{font-size:1.35rem;margin-bottom:6px;}
+  .instruksi p{color:var(--ink-soft);font-size:0.92rem;margin:0;}
+
+  .kertas-suara{
+    border:2px dashed var(--line);
+    border-radius:16px;
+    padding:22px;
+    background:var(--paper-2);
+  }
+
+  .candidates{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+  }
+  @media (max-width:720px){
+    .candidates{grid-template-columns:1fr;}
+  }
+
+  .candidate-card{
+    background:var(--paper);
+    border:2.5px solid var(--line);
+    border-radius:14px;
+    padding:18px 14px 20px;
+    text-align:center;
+    cursor:pointer;
+    position:relative;
+    transition:border-color .15s ease, transform .1s ease;
+    outline:none;
+  }
+  .candidate-card:hover{border-color:var(--gold);}
+  .candidate-card:focus-visible{border-color:var(--merah);box-shadow:0 0 0 3px rgba(158,27,38,0.25);}
+  .candidate-card:active{transform:scale(0.98);}
+
+  .no-badge{
+    width:38px;height:38px;
+    border-radius:50%;
+    background:var(--merah);
+    color:#fff;
+    font-family:"Fraunces",serif;
+    font-weight:700;
+    font-size:1.05rem;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 12px;
+    cursor:pointer;
+  }
+  .foto-frame{
+    width:120px;height:150px;
+    margin:0 auto 12px;
+    border:3px solid var(--wood);
+    border-radius:6px;
+    background:var(--paper-2);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    position:relative;
+  }
+  .foto-frame img{width:100%;height:100%;object-fit:cover;}
+  .foto-frame .initial{
+    font-family:"Fraunces",serif;
+    font-size:2.6rem;
+    font-weight:600;
+    color:var(--ink-soft);
+  }
+  .cand-nama{
+    font-family:"Fraunces",serif;
+    font-weight:700;
+    font-size:1.08rem;
+    margin-bottom:4px;
+    line-height:1.25;
+  }
+  .cand-moto{
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    line-height:1.35;
+    min-height:2.2em;
+  }
+  .tap-hint{
+    margin-top:12px;
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    letter-spacing:0.02em;
+  }
+
+  .footer-links{
+    text-align:center;
+    margin-top:26px;
+  }
+
+  /* ---------- MODAL ---------- */
+  .overlay{
+    position:fixed;inset:0;
+    background:rgba(20,16,10,0.55);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    z-index:50;
+    opacity:0;pointer-events:none;
+    transition:opacity .18s ease;
+  }
+  .overlay.show{opacity:1;pointer-events:auto;}
+  .modal{
+    background:var(--paper);
+    border-radius:16px;
+    max-width:380px;
+    width:100%;
+    padding:28px 26px 24px;
+    text-align:center;
+    border:1px solid var(--line);
+    transform:translateY(8px) scale(0.98);
+    transition:transform .18s ease;
+  }
+  .overlay.show .modal{transform:translateY(0) scale(1);}
+  .modal .foto-frame{width:96px;height:120px;}
+  .modal h3{font-size:1.15rem;margin:14px 0 4px;}
+  .modal .modal-no{color:var(--merah);font-weight:700;font-size:0.85rem;letter-spacing:0.02em;}
+  .modal p.confirm-q{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+    margin:14px 0 20px;
+  }
+  .modal-actions{display:flex;flex-direction:column;gap:10px;}
+  .modal-actions .btn{width:100%;}
+
+  /* ---------- STAMP / THANKYOU ---------- */
+  .thankyou{
+    text-align:center;
+    padding:50px 20px 20px;
+  }
+  .stamp{
+    width:120px;height:120px;
+    border-radius:50%;
+    border:5px solid var(--hijau);
+    color:var(--hijau);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 24px;
+    transform:rotate(-8deg) scale(0.6);
+    opacity:0;
+    animation:stampIn .45s cubic-bezier(.2,1.4,.4,1) forwards;
+  }
+  @keyframes stampIn{
+    to{transform:rotate(-8deg) scale(1);opacity:1;}
+  }
+  .stamp svg{width:60px;height:60px;}
+  .thankyou h2{font-size:1.6rem;margin-bottom:8px;}
+  .thankyou p{color:var(--ink-soft);font-size:0.95rem;max-width:420px;margin:0 auto 26px;}
+  .countdown{font-size:0.82rem;color:var(--ink-soft);margin-top:18px;}
+
+  /* ---------- REKAP (PANITIA) ---------- */
+  .rekap-card{
+    border:2px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+    background:var(--paper-2);
+  }
+  .rekap-row{
+    display:flex;align-items:center;gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .rekap-row:last-child{border-bottom:none;}
+  .rekap-no{
+    width:32px;height:32px;border-radius:50%;
+    background:var(--merah);color:#fff;
+    font-family:"Fraunces",serif;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;font-size:0.9rem;
+  }
+  .rekap-info{flex:1;min-width:0;}
+  .rekap-nama{font-weight:700;font-size:0.95rem;}
+  .rekap-bar-track{
+    height:10px;border-radius:6px;background:var(--line);
+    margin-top:6px;overflow:hidden;
+  }
+  .rekap-bar-fill{
+    height:100%;background:var(--merah);border-radius:6px;
+    transition:width .3s ease;
+  }
+  .rekap-count{
+    font-family:"Fraunces",serif;font-weight:700;
+    font-size:1.2rem;min-width:48px;text-align:right;
+  }
+  .rekap-total{
+    text-align:center;margin-top:18px;
+    font-size:0.85rem;color:var(--ink-soft);
+  }
+  .pin-box{
+    max-width:280px;margin:60px auto;text-align:center;
+  }
+  .pin-box input{
+    width:100%;padding:14px;font-size:1.4rem;text-align:center;
+    letter-spacing:0.3em;
+    border:2px solid var(--line);border-radius:10px;
+    background:var(--paper);color:var(--ink);
+    margin-bottom:14px;
+    font-family:"Public Sans",sans-serif;
+  }
+  .pin-error{color:var(--merah);font-size:0.82rem;min-height:1.2em;margin-bottom:6px;}
+
+  .top-actions{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:18px;
+  }
+  .top-actions .btn-outline{padding:10px 18px;font-size:0.85rem;}
+
+  /* ---------- FLOATING CONTROLS (no header) ---------- */
+  .fs-float{
+    position:fixed;
+    top:14px;right:14px;
+    z-index:40;
+    background:var(--paper-2);
+    border:2px solid var(--line);
+    color:var(--ink-soft);
+    border-radius:10px;
+    width:40px;height:40px;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+  }
+  .fs-float:hover{border-color:var(--ink);color:var(--ink);}
+  .fs-float svg{width:18px;height:18px;}
+
+  .admin-dot{
+    position:fixed;
+    bottom:10px;left:10px;
+    width:28px;height:28px;
+    z-index:40;
+    background:transparent;
+    border:none;
+    opacity:0.15;
+    cursor:default;
+  }
+
+  /* ---------- SCAN UNDANGAN ---------- */
+  .scan-wrap{text-align:center;padding:16px 20px 10px;}
+  .scan-wrap h2{font-size:1.5rem;margin-bottom:8px;}
+  .scan-wrap > p{color:var(--ink-soft);font-size:0.92rem;max-width:420px;margin:0 auto 22px;line-height:1.5;}
+  .scan-camera-box{
+    width:min(300px,80vw);
+    aspect-ratio:1/1;
+    margin:0 auto 16px;
+    border:3px solid var(--wood);
+    border-radius:16px;
+    overflow:hidden;
+    background:var(--paper-2);
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .scan-camera-box #qr-reader-region{width:100%;height:100%;}
+  .scan-camera-box #qr-reader-region video{width:100% !important;height:100% !important;object-fit:cover;}
+  .scan-placeholder{
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    color:var(--ink-soft);
+    padding:20px;
+  }
+  .scan-placeholder svg{width:60px;height:60px;opacity:0.7;}
+  .scan-placeholder span{font-size:0.75rem;}
+  .scan-frame-corner{
+    position:absolute;inset:14%;
+    border:2px solid rgba(46,91,65,0.55);
+    border-radius:10px;
+    pointer-events:none;
+  }
+  .code-form{max-width:300px;margin:6px auto 0;}
+  .code-form input[type=text]{
+    width:100%;padding:14px;font-size:1.05rem;text-align:center;
+    letter-spacing:0.06em;
+    border:2px solid var(--line);border-radius:10px;
+    background:var(--paper);color:var(--ink);
+    margin-bottom:10px;
+    font-family:"Public Sans",sans-serif;
+  }
+  .scan-msg{min-height:1.3em;font-size:0.83rem;margin-bottom:10px;}
+  .scan-msg.error{color:var(--merah);}
+  .scan-msg.success{color:var(--hijau);}
+  .scan-divider{
+    display:flex;align-items:center;gap:10px;
+    color:var(--ink-soft);font-size:0.76rem;
+    max-width:300px;margin:18px auto;
+  }
+  .scan-divider::before,.scan-divider::after{content:"";flex:1;height:1px;background:var(--line);}
+  .verified-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(46,91,65,0.12);
+    color:var(--hijau);
+    border-radius:20px;
+    padding:6px 14px;
+    font-size:0.78rem;
+    font-weight:700;
+    margin-bottom:18px;
+  }
+  .verified-badge svg{width:14px;height:14px;}
+</style>
+</head>
+<body>
+
+<button class="fs-float" id="fsToggle" title="Layar penuh" aria-label="Aktifkan layar penuh">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+    <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+  </svg>
+</button>
+<button class="admin-dot" id="sealTap" aria-label="Akses panitia"></button>
+
+<div class="app">
+
+  <div class="app-body">
+
+  <!-- ===================== SCREEN 1: WELCOME ===================== -->
+  <section class="screen active" id="screen-welcome">
+    <div class="welcome">
+      <div class="ballot-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#5B3A28" stroke-width="1.6">
+          <rect x="3" y="4" width="18" height="16" rx="1.5"/>
+          <path d="M3 9h18"/>
+          <path d="M8 13l2 2 4-4" stroke="#9E1B26"/>
+        </svg>
+      </div>
+      <h2>Selamat Datang, Warga Desa</h2>
+      <p class="welcome-sub">Pemilihan Kepala Desa <strong id="desaNameHeader"></strong><br><span id="kecNameHeader"></span></p>
+      <p>Gunakan hak pilih Anda dengan tenang dan mandiri. Tekan tombol di bawah untuk mulai memilih calon Kepala Desa.</p>
+      <button class="btn btn-primary" onclick="requestFullscreenIfAvailable(); goTo('scan')">Mulai Memilih</button>
+    </div>
+  </section>
+
+  <!-- ===================== SCREEN 1.5: SCAN UNDANGAN ===================== -->
+  <section class="screen" id="screen-scan">
+    <div class="scan-wrap">
+      <h2>Scan Undangan Memilih</h2>
+      <p>Arahkan kamera ke kode QR/barcode pada undangan Anda, atau ketik kode undangan lalu tekan Enter.</p>
+
+      <div class="scan-camera-box" id="scanCameraBox">
+        <div id="qr-reader-region"></div>
+        <div class="scan-placeholder" id="scanPlaceholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <path d="M14 14h3v3h-3z"/>
+            <path d="M19 14h2v2"/>
+            <path d="M14 19h2v2"/>
+            <path d="M19 19h2v2"/>
+          </svg>
+          <span>Kamera belum aktif</span>
+        </div>
+        <div class="scan-frame-corner" id="scanFrameCorner" style="display:none;"></div>
+      </div>
+
+      <button class="btn btn-outline" id="btnStartCamera" onclick="toggleCameraScan()">Aktifkan Kamera</button>
+
+      <div class="scan-divider">atau masukkan kode manual</div>
+
+      <div class="code-form">
+        <input type="text" id="codeInput" placeholder="Kode Undangan" autocomplete="off">
+        <div class="scan-msg" id="scanMsg"></div>
+        <button class="btn btn-primary" style="width:100%;" onclick="submitCode()">Masuk &amp; Pilih Calon</button>
+      </div>
+
+      <div style="margin-top:16px;">
+        <button class="btn-ghost" onclick="fillDemoCode()">Gunakan kode demo (uji coba)</button>
+      </div>
+      <div class="footer-links">
+        <button class="btn-ghost" onclick="cancelScan()">‹ Batal &amp; kembali ke awal</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SCREEN 2: VOTING ===================== -->
+  <section class="screen" id="screen-vote">
+    <div class="instruksi">
+      <div class="verified-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        Undangan Terverifikasi
+      </div>
+      <h2>Pilih Salah Satu Calon</h2>
+      <p>Sentuh foto atau nomor calon yang Anda pilih, lalu konfirmasi pilihan Anda.</p>
+    </div>
+    <div class="kertas-suara">
+      <div class="candidates" id="candidateGrid"></div>
+    </div>
+    <div class="footer-links">
+      <button class="btn-ghost" onclick="cancelVoteScreen()">‹ Batal &amp; kembali ke awal</button>
+    </div>
+  </section>
+
+  <!-- ===================== SCREEN 3: THANK YOU ===================== -->
+  <section class="screen" id="screen-thankyou">
+    <div class="thankyou">
+      <div class="stamp">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 6L9 17l-5-5"/>
+        </svg>
+      </div>
+      <h2>Terima Kasih!</h2>
+      <p id="thankyouDetail">Suara Anda telah berhasil direkam. Terima kasih telah menggunakan hak pilih Anda.</p>
+      <button class="btn btn-outline" onclick="finishNow()">Selesai</button>
+      <div class="countdown" id="countdownText"></div>
+    </div>
+  </section>
+
+  <!-- ===================== SCREEN 4: PIN PANITIA ===================== -->
+  <section class="screen" id="screen-pin">
+    <div class="pin-box">
+      <h3 style="margin-bottom:8px;">Akses Panitia</h3>
+      <p style="color:var(--ink-soft);font-size:0.88rem;margin-bottom:18px;">Masukkan PIN untuk melihat rekapitulasi suara.</p>
+      <input type="password" id="pinInput" inputmode="numeric" maxlength="8" placeholder="••••">
+      <div class="pin-error" id="pinError"></div>
+      <button class="btn btn-primary" style="width:100%;margin-bottom:10px;" onclick="checkPin()">Masuk</button>
+      <button class="btn-ghost" onclick="goTo('welcome')">Batal</button>
+    </div>
+  </section>
+
+  <!-- ===================== SCREEN 5: REKAP ===================== -->
+  <section class="screen" id="screen-rekap">
+    <div class="top-actions">
+      <h2 style="font-size:1.2rem;">Rekapitulasi Suara</h2>
+      <button class="btn-outline" style="padding:8px 14px;font-size:0.8rem;border-radius:8px;" onclick="goTo('welcome')">Tutup</button>
+    </div>
+    <div class="rekap-card" id="rekapList"></div>
+    <div class="rekap-total" id="rekapTotal"></div>
+    <div class="footer-links">
+      <button class="btn-ghost" onclick="resetVotes()">Reset seluruh data suara (perangkat ini)</button>
+    </div>
+  </section>
+
+  </div><!-- /.app-body -->
+</div>
+
+<!-- ===================== MODAL KONFIRMASI ===================== -->
+<div class="overlay" id="confirmOverlay">
+  <div class="modal">
+    <div class="modal-no" id="modalNo"></div>
+    <div class="foto-frame" id="modalFoto"></div>
+    <h3 id="modalNama"></h3>
+    <p class="confirm-q">Apakah Anda yakin memilih calon ini sebagai Kepala Desa <span id="desaNameModal"></span>? Pilihan tidak dapat diubah setelah dikonfirmasi.</p>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="confirmVote()">Ya, Saya Yakin</button>
+      <button class="btn btn-outline" onclick="cancelVote()">Batal, Pilih Ulang</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var CANDIDATES = window.CANDIDATES || [];
+  var STORAGE_KEY = "pilkades_votes_" + (window.DESA_NAME || "desa").replace(/\s+/g,"_").toLowerCase();
+  var USED_CODES_KEY = STORAGE_KEY + "_kode_terpakai";
+  var selected = null;
+  var countdownTimer = null;
+  var currentInviteCode = null;
+  var html5QrCodeInstance = null;
+  var cameraActive = false;
+
+  function safeGetUsedCodes(){
+    try{
+      var raw = localStorage.getItem(USED_CODES_KEY);
+      var parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    }catch(e){ return []; }
+  }
+  function safeSaveUsedCodes(list){
+    try{ localStorage.setItem(USED_CODES_KEY, JSON.stringify(list)); }
+    catch(e){ console.warn("Tidak dapat menyimpan kode terpakai:", e); }
+  }
+  function isCodeUsed(code){
+    return safeGetUsedCodes().indexOf(code) !== -1;
+  }
+  function markCodeUsed(code){
+    var list = safeGetUsedCodes();
+    if(list.indexOf(code) === -1){
+      list.push(code);
+      safeSaveUsedCodes(list);
+    }
+  }
+
+  function showScanMsg(text, type){
+    var el = document.getElementById("scanMsg");
+    el.textContent = text || "";
+    el.className = "scan-msg" + (type ? " " + type : "");
+  }
+
+  function handleScannedCode(rawCode){
+    var code = (rawCode || "").trim();
+    if(!code){
+      showScanMsg("Kode undangan tidak boleh kosong.", "error");
+      return;
+    }
+    if(isCodeUsed(code)){
+      showScanMsg("Kode undangan ini sudah pernah digunakan untuk memilih.", "error");
+      return;
+    }
+    currentInviteCode = code;
+    showScanMsg("Undangan valid. Membuka surat suara...", "success");
+    stopCameraScan();
+    document.getElementById("codeInput").value = "";
+    setTimeout(function(){
+      showScanMsg("", "");
+      goTo("vote");
+    }, 450);
+  }
+
+  window.submitCode = function(){
+    handleScannedCode(document.getElementById("codeInput").value);
+  };
+
+  window.fillDemoCode = function(){
+    var demo = "UND-" + Math.random().toString(36).slice(2,8).toUpperCase();
+    document.getElementById("codeInput").value = demo;
+    handleScannedCode(demo);
+  };
+
+  window.cancelScan = function(){
+    stopCameraScan();
+    document.getElementById("codeInput").value = "";
+    showScanMsg("", "");
+    goTo("welcome");
+  };
+
+  function stopCameraScan(){
+    if(html5QrCodeInstance && cameraActive){
+      html5QrCodeInstance.stop().then(function(){
+        return html5QrCodeInstance.clear();
+      }).catch(function(){ /* ignore */ });
+    }
+    cameraActive = false;
+    document.getElementById("scanPlaceholder").style.display = "flex";
+    document.getElementById("scanFrameCorner").style.display = "none";
+    var btn = document.getElementById("btnStartCamera");
+    if(btn) btn.textContent = "Aktifkan Kamera";
+  }
+
+  window.toggleCameraScan = function(){
+    if(cameraActive){ stopCameraScan(); return; }
+    if(typeof Html5Qrcode === "undefined"){
+      showScanMsg("Kamera tidak tersedia di perangkat ini. Gunakan kode manual.", "error");
+      return;
+    }
+    try{
+      html5QrCodeInstance = html5QrCodeInstance || new Html5Qrcode("qr-reader-region");
+      html5QrCodeInstance.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 200 },
+        function(decodedText){ handleScannedCode(decodedText); },
+        function(){ /* ignore per-frame scan errors */ }
+      ).then(function(){
+        cameraActive = true;
+        document.getElementById("scanPlaceholder").style.display = "none";
+        document.getElementById("scanFrameCorner").style.display = "block";
+        document.getElementById("btnStartCamera").textContent = "Matikan Kamera";
+        showScanMsg("", "");
+      }).catch(function(err){
+        showScanMsg("Tidak bisa mengakses kamera. Gunakan kode manual di bawah.", "error");
+      });
+    }catch(e){
+      showScanMsg("Tidak bisa mengakses kamera. Gunakan kode manual di bawah.", "error");
+    }
+  };
+
+  (function initCodeInputEnter(){
+    document.addEventListener("DOMContentLoaded", function(){
+      var input = document.getElementById("codeInput");
+      if(input){
+        input.addEventListener("keydown", function(e){
+          if(e.key === "Enter"){ e.preventDefault(); window.submitCode(); }
+        });
+      }
+    });
+  })();
+
+  document.getElementById("desaNameHeader").textContent = window.DESA_NAME || "";
+  document.getElementById("kecNameHeader").textContent = window.KEC_NAME || "";
+  document.getElementById("desaNameModal").textContent = window.DESA_NAME || "";
+
+  function safeGetVotes(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return {};
+      var parsed = JSON.parse(raw);
+      return (parsed && typeof parsed === "object") ? parsed : {};
+    }catch(e){
+      return {};
+    }
+  }
+  function safeSaveVotes(votes){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
+    }catch(e){
+      console.warn("Tidak dapat menyimpan suara:", e);
+    }
+  }
+
+  function renderCandidates(){
+    var grid = document.getElementById("candidateGrid");
+    grid.innerHTML = "";
+    CANDIDATES.forEach(function(c){
+      var card = document.createElement("div");
+      card.className = "candidate-card";
+      card.tabIndex = 0;
+      card.setAttribute("role","button");
+      card.setAttribute("aria-label", "Pilih calon nomor " + c.no + ", " + c.nama);
+
+      var badge = document.createElement("div");
+      badge.className = "no-badge";
+      badge.textContent = c.no;
+
+      var fotoWrap = document.createElement("div");
+      fotoWrap.className = "foto-frame";
+      if(c.foto){
+        var img = document.createElement("img");
+        img.src = c.foto;
+        img.alt = "Foto " + c.nama;
+        fotoWrap.appendChild(img);
+      }else{
+        var initial = document.createElement("div");
+        initial.className = "initial";
+        initial.textContent = (c.nama || "?").trim().charAt(0).toUpperCase();
+        fotoWrap.appendChild(initial);
+      }
+
+      var nama = document.createElement("div");
+      nama.className = "cand-nama";
+      nama.textContent = c.nama;
+
+      var moto = document.createElement("div");
+      moto.className = "cand-moto";
+      moto.textContent = c.moto || "";
+
+      var hint = document.createElement("div");
+      hint.className = "tap-hint";
+      hint.textContent = "Sentuh untuk memilih";
+
+      card.appendChild(badge);
+      card.appendChild(fotoWrap);
+      card.appendChild(nama);
+      card.appendChild(moto);
+      card.appendChild(hint);
+
+      function pick(){ openConfirm(c); }
+      card.addEventListener("click", pick);
+      card.addEventListener("keydown", function(e){
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); pick(); }
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  function openConfirm(c){
+    selected = c;
+    document.getElementById("modalNo").textContent = "Calon Nomor " + c.no;
+    document.getElementById("modalNama").textContent = c.nama;
+    var fotoWrap = document.getElementById("modalFoto");
+    fotoWrap.innerHTML = "";
+    if(c.foto){
+      var img = document.createElement("img");
+      img.src = c.foto;
+      img.alt = "Foto " + c.nama;
+      fotoWrap.appendChild(img);
+    }else{
+      var initial = document.createElement("div");
+      initial.className = "initial";
+      initial.textContent = (c.nama || "?").trim().charAt(0).toUpperCase();
+      fotoWrap.appendChild(initial);
+    }
+    document.getElementById("confirmOverlay").classList.add("show");
+  }
+
+  window.cancelVote = function(){
+    selected = null;
+    document.getElementById("confirmOverlay").classList.remove("show");
+  };
+
+  window.confirmVote = function(){
+    if(!selected) return;
+    var votes = safeGetVotes();
+    var key = String(selected.no);
+    votes[key] = (votes[key] || 0) + 1;
+    safeSaveVotes(votes);
+    if(currentInviteCode){ markCodeUsed(currentInviteCode); }
+    currentInviteCode = null;
+
+    document.getElementById("thankyouDetail").textContent =
+      "Suara Anda untuk Calon Nomor " + selected.no + " (" + selected.nama + ") telah berhasil direkam. Terima kasih telah menggunakan hak pilih Anda.";
+    document.getElementById("confirmOverlay").classList.remove("show");
+    selected = null;
+    goTo("thankyou");
+    startCountdown();
+  };
+
+  function startCountdown(){
+    var seconds = 6;
+    var el = document.getElementById("countdownText");
+    clearInterval(countdownTimer);
+    function tick(){
+      el.textContent = "Kembali ke halaman utama dalam " + seconds + " detik...";
+      if(seconds <= 0){
+        clearInterval(countdownTimer);
+        goTo("welcome");
+        return;
+      }
+      seconds--;
+    }
+    tick();
+    countdownTimer = setInterval(tick, 1000);
+  }
+
+  window.cancelVoteScreen = function(){
+    currentInviteCode = null;
+    goTo("welcome");
+  };
+
+  window.finishNow = function(){
+    clearInterval(countdownTimer);
+    goTo("welcome");
+  };
+
+  function renderRekap(){
+    var votes = safeGetVotes();
+    var list = document.getElementById("rekapList");
+    list.innerHTML = "";
+    var total = 0;
+    CANDIDATES.forEach(function(c){ total += (votes[String(c.no)] || 0); });
+
+    CANDIDATES.forEach(function(c){
+      var count = votes[String(c.no)] || 0;
+      var pct = total > 0 ? Math.round((count/total)*100) : 0;
+
+      var row = document.createElement("div");
+      row.className = "rekap-row";
+
+      var no = document.createElement("div");
+      no.className = "rekap-no";
+      no.textContent = c.no;
+
+      var info = document.createElement("div");
+      info.className = "rekap-info";
+      var nama = document.createElement("div");
+      nama.className = "rekap-nama";
+      nama.textContent = c.nama;
+      var track = document.createElement("div");
+      track.className = "rekap-bar-track";
+      var fill = document.createElement("div");
+      fill.className = "rekap-bar-fill";
+      fill.style.width = pct + "%";
+      track.appendChild(fill);
+      info.appendChild(nama);
+      info.appendChild(track);
+
+      var countEl = document.createElement("div");
+      countEl.className = "rekap-count";
+      countEl.textContent = count;
+
+      row.appendChild(no);
+      row.appendChild(info);
+      row.appendChild(countEl);
+      list.appendChild(row);
+    });
+
+    document.getElementById("rekapTotal").textContent =
+      "Total suara sah tercatat di perangkat ini: " + total + " · Kode undangan terpakai: " + safeGetUsedCodes().length;
+  }
+
+  window.resetVotes = function(){
+    if(confirm("Hapus semua data rekapitulasi suara dan kode undangan terpakai di perangkat ini? Tindakan ini tidak dapat dibatalkan.")){
+      safeSaveVotes({});
+      safeSaveUsedCodes([]);
+      renderRekap();
+    }
+  };
+
+  window.checkPin = function(){
+    var input = document.getElementById("pinInput");
+    var err = document.getElementById("pinError");
+    if(input.value === (window.PIN_PANITIA || "")){
+      err.textContent = "";
+      input.value = "";
+      renderRekap();
+      goTo("rekap");
+    }else{
+      err.textContent = "PIN salah. Coba lagi.";
+    }
+  };
+
+  var sealTapCount = 0, sealTapTimer = null;
+  document.getElementById("sealTap").addEventListener("click", function(){
+    sealTapCount++;
+    clearTimeout(sealTapTimer);
+    sealTapTimer = setTimeout(function(){ sealTapCount = 0; }, 1500);
+    if(sealTapCount >= 5){
+      sealTapCount = 0;
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinError").textContent = "";
+      goTo("pin");
+    }
+  });
+
+  function isFullscreen(){
+    return !!(document.fullscreenElement || document.webkitFullscreenElement);
+  }
+  function requestFS(){
+    var el = document.documentElement;
+    try{
+      var req = el.requestFullscreen || el.webkitRequestFullscreen;
+      if(req) req.call(el);
+    }catch(e){ /* ignore: some browsers block programmatic fullscreen */ }
+  }
+  function exitFS(){
+    try{
+      var exit = document.exitFullscreen || document.webkitExitFullscreen;
+      if(exit) exit.call(document);
+    }catch(e){ /* ignore */ }
+  }
+  function updateFsIcon(){
+    var btn = document.getElementById("fsToggle");
+    if(!btn) return;
+    btn.innerHTML = isFullscreen()
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
+  }
+  window.requestFullscreenIfAvailable = function(){
+    if(!isFullscreen()) requestFS();
+  };
+  document.getElementById("fsToggle").addEventListener("click", function(){
+    if(isFullscreen()) exitFS(); else requestFS();
+  });
+  document.addEventListener("fullscreenchange", updateFsIcon);
+  document.addEventListener("webkitfullscreenchange", updateFsIcon);
+
+  window.goTo = function(name){
+    clearInterval(countdownTimer);
+    var leavingScan = document.getElementById("screen-scan").classList.contains("active") && name !== "scan";
+    if(leavingScan && cameraActive){ stopCameraScan(); }
+    document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+    var target = document.getElementById("screen-" + name);
+    if(target) target.classList.add("active");
+    if(name === "pin"){
+      setTimeout(function(){ document.getElementById("pinInput").focus(); }, 50);
+    }
+  };
+
+  renderCandidates();
+})();
+</script>
+
+</body>
+</html>
