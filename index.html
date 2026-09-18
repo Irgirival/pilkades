@@ -417,6 +417,48 @@
     border-bottom:1px solid var(--line);
   }
   .rekap-row:last-child{border-bottom:none;}
+  .rekap-row.is-leader{
+    background:rgba(176,138,46,0.10);
+    border-radius:10px;
+    padding:14px 10px;
+    margin:0 -10px;
+    border-bottom:none;
+  }
+  .rekap-row.is-leader .rekap-bar-fill{background:var(--gold);}
+  .rekap-row.is-leader .rekap-no{background:var(--gold);color:#2b2109;}
+  .crown{
+    display:inline-block;
+    margin-right:5px;
+    font-size:0.9em;
+  }
+  .leader-banner{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:linear-gradient(135deg, rgba(176,138,46,0.16), rgba(176,138,46,0.06));
+    border:1.5px solid var(--gold);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:16px;
+  }
+  .leader-banner .leader-icon{
+    width:38px;height:38px;flex-shrink:0;
+    border-radius:50%;
+    background:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;
+  }
+  .leader-banner .leader-text{font-size:0.88rem;line-height:1.4;}
+  .leader-banner .leader-text strong{
+    font-family:"Fraunces",serif;
+    font-size:1.02rem;
+    display:block;
+  }
+  .leader-banner.tie{
+    border-color:var(--line);
+    background:var(--paper-2);
+  }
+  .leader-banner.tie .leader-icon{background:var(--paper);border:1.5px solid var(--line);}
   .rekap-no{
     width:32px;height:32px;border-radius:50%;
     background:var(--merah);color:#fff;
@@ -479,14 +521,19 @@
 
   .admin-dot{
     position:fixed;
-    bottom:10px;left:10px;
-    width:28px;height:28px;
+    bottom:12px;left:12px;
+    width:34px;height:34px;
     z-index:40;
-    background:transparent;
-    border:none;
-    opacity:0.15;
-    cursor:default;
+    background:var(--paper-2);
+    border:1.5px solid var(--line);
+    border-radius:50%;
+    opacity:0.55;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-soft);
+    cursor:pointer;
   }
+  .admin-dot:hover{opacity:1;border-color:var(--ink);color:var(--ink);}
+  .admin-dot svg{width:16px;height:16px;}
 
   /* ---------- SCAN UNDANGAN ---------- */
   .scan-wrap{text-align:center;padding:16px 20px 10px;}
@@ -557,7 +604,12 @@
     <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
   </svg>
 </button>
-<button class="admin-dot" id="sealTap" aria-label="Akses panitia"></button>
+<button class="admin-dot" id="sealTap" aria-label="Akses panitia" title="Akses Panitia">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+  </svg>
+</button>
 
 <div class="app">
 
@@ -673,11 +725,9 @@
       <h2 style="font-size:1.2rem;">Rekapitulasi Suara</h2>
       <button class="btn-outline" style="padding:8px 14px;font-size:0.8rem;border-radius:8px;" onclick="goTo('welcome')">Tutup</button>
     </div>
+    <div class="leader-banner" id="leaderBanner"></div>
     <div class="rekap-card" id="rekapList"></div>
     <div class="rekap-total" id="rekapTotal"></div>
-    <div class="footer-links">
-      <button class="btn-ghost" onclick="resetVotes()">Reset seluruh data suara (perangkat ini)</button>
-    </div>
   </section>
 
   </div><!-- /.app-body -->
@@ -1057,12 +1107,34 @@
     var total = 0;
     CANDIDATES.forEach(function(c){ total += (votes[String(c.no)] || 0); });
 
-    CANDIDATES.forEach(function(c){
+    var sorted = CANDIDATES.slice().sort(function(a, b){
+      return (votes[String(b.no)] || 0) - (votes[String(a.no)] || 0);
+    });
+    var topCount = sorted.length ? (votes[String(sorted[0].no)] || 0) : 0;
+    var leaders = sorted.filter(function(c){ return (votes[String(c.no)] || 0) === topCount; });
+
+    var banner = document.getElementById("leaderBanner");
+    if(total === 0){
+      banner.className = "leader-banner tie";
+      banner.innerHTML = '<div class="leader-icon">–</div><div class="leader-text">Belum ada suara masuk.</div>';
+    }else if(leaders.length > 1){
+      banner.className = "leader-banner tie";
+      var names = leaders.map(function(c){ return c.nama; }).join(" &amp; ");
+      banner.innerHTML = '<div class="leader-icon">=</div><div class="leader-text">Sementara seri antara<strong>' + names + '</strong>dengan ' + topCount + ' suara masing-masing.</div>';
+    }else{
+      var leader = leaders[0];
+      var pct = total > 0 ? Math.round((topCount/total)*100) : 0;
+      banner.className = "leader-banner";
+      banner.innerHTML = '<div class="leader-icon">\uD83D\uDC51</div><div class="leader-text">Sementara unggul<strong>' + leader.nama + '</strong>dengan ' + topCount + ' suara (' + pct + '%)</div>';
+    }
+
+    sorted.forEach(function(c, idx){
       var count = votes[String(c.no)] || 0;
       var pct = total > 0 ? Math.round((count/total)*100) : 0;
+      var isLeader = total > 0 && count === topCount && leaders.length === 1 && idx === 0;
 
       var row = document.createElement("div");
-      row.className = "rekap-row";
+      row.className = "rekap-row" + (isLeader ? " is-leader" : "");
 
       var no = document.createElement("div");
       no.className = "rekap-no";
@@ -1072,7 +1144,7 @@
       info.className = "rekap-info";
       var nama = document.createElement("div");
       nama.className = "rekap-nama";
-      nama.textContent = c.nama;
+      nama.innerHTML = (isLeader ? '<span class="crown">\uD83D\uDC51</span>' : "") + c.nama;
       var track = document.createElement("div");
       track.className = "rekap-bar-track";
       var fill = document.createElement("div");
@@ -1084,7 +1156,7 @@
 
       var countEl = document.createElement("div");
       countEl.className = "rekap-count";
-      countEl.textContent = count;
+      countEl.textContent = count + " (" + pct + "%)";
 
       row.appendChild(no);
       row.appendChild(info);
@@ -1095,14 +1167,6 @@
     document.getElementById("rekapTotal").textContent =
       "Total suara sah tercatat di perangkat ini: " + total + " · Kode undangan terpakai: " + safeGetUsedCodes().length;
   }
-
-  window.resetVotes = function(){
-    if(confirm("Hapus semua data rekapitulasi suara dan kode undangan terpakai di perangkat ini? Tindakan ini tidak dapat dibatalkan.")){
-      safeSaveVotes({});
-      safeSaveUsedCodes([]);
-      renderRekap();
-    }
-  };
 
   window.checkPin = function(){
     var input = document.getElementById("pinInput");
