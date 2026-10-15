@@ -762,6 +762,7 @@
 <!-- ===================== MODAL SUKSES + RESI ===================== -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js"></script>
 <script>
 (function(){
@@ -1128,9 +1129,49 @@
     return new Uint8Array(b);
   }
 
+  // Cetak QR sebagai GAMBAR RASTER (GS v 0) supaya ukuran BESAR & tegas mengikuti
+  // lebar kertas 72mm, tidak bergantung pada perintah module-size printer.
+  function escposRasterQR(text){
+    var qr;
+    try{
+      qr = qrcode(0, "M");   // typeNumber 0 = otomatis
+      qr.addData(text);
+      qr.make();
+    }catch(e){ return escposQR(text); } // fallback bila lib QR tak tersedia
+    var count = qr.getModuleCount();
+    var quiet = 3;                       // modul ruang putih (quiet zone)
+    var total = count + quiet * 2;
+    var target = 480;                    // dots (~60mm) utk kertas 72mm (576 dots)
+    var scale = Math.max(4, Math.floor(target / total));
+    var width = total * scale;
+    var height = width;
+    var bytesPerRow = Math.ceil(width / 8);
+    var data = new Uint8Array(bytesPerRow * height);
+    for(var ry=0; ry<height; ry++){
+      var my = Math.floor(ry / scale) - quiet;
+      var rowOff = ry * bytesPerRow;
+      for(var rx=0; rx<width; rx++){
+        var mx = Math.floor(rx / scale) - quiet;
+        var dark = false;
+        if(my>=0 && my<count && mx>=0 && mx<count){ dark = qr.isDark(my, mx); }
+        if(dark){ data[rowOff + (rx >> 3)] |= (0x80 >> (rx & 7)); }
+      }
+    }
+    var b = [];
+    b.push(0x1B,0x40);            // init
+    b.push(0x1B,0x61,0x01);       // rata tengah
+    b.push(0x1D,0x76,0x30,0x00);  // GS v 0 raster, m=0
+    b.push(bytesPerRow & 0xFF); b.push((bytesPerRow >> 8) & 0xFF);
+    b.push(height & 0xFF); b.push((height >> 8) & 0xFF);
+    for(var i=0;i<data.length;i++) b.push(data[i]);
+    b.push(0x1B,0x64,0x04);       // maju 4 baris
+    b.push(0x1D,0x56,0x00);       // potong kertas
+    return new Uint8Array(b);
+  }
+
   async function bleWrite(data){
     var noResp = bleChar.properties.writeWithoutResponse || bleChar.properties.writeNoResponse;
-    var maxLen = 100;
+    var maxLen = 182;
     var i = 0;
     while(i < data.length){
       var chunk = data.slice(i, Math.min(i + maxLen, data.length));
@@ -1144,13 +1185,13 @@
         if(maxLen > 1){ maxLen = 1; continue; }
         throw err;
       }
-      await new Promise(function(r){ setTimeout(r, 12); });
+      await new Promise(function(r){ setTimeout(r, 6); });
     }
   }
 
   function printViaBluetooth(text){
     if(!bleChar || !text) return Promise.reject(new Error("printer belum siap"));
-    return bleWrite(escposQR(text));
+    return bleWrite(escposRasterQR(text));
   }
 
   // Cari karakteristik yang bisa ditulisi: coba layanan printer BLE yang umum, baru sisanya.
