@@ -1114,32 +1114,79 @@
     var enc = new TextEncoder().encode(text);
     var b = [];
     b.push(0x1B,0x40);                                    // init
+    b.push(0x1B,0x61,0x01);                               // rata tengah (kertas 72mm)
     b.push(0x1D,0x28,0x6B,0x04,0x00,0x31,0x41,0x32,0x00); // model 2
-    b.push(0x1D,0x28,0x6B,0x03,0x00,0x31,0x43,0x06);      // ukuran modul 6
+    b.push(0x1D,0x28,0x6B,0x03,0x00,0x31,0x43,0x08);      // ukuran modul 8 (72mm)
     b.push(0x1D,0x28,0x6B,0x03,0x00,0x31,0x45,0x31);      // koreksi error M
     var len = enc.length + 3;
     b.push(0x1D,0x28,0x6B,(len & 0xFF),(len >> 8) & 0xFF,0x31,0x50,0x30); // simpan data
     for(var i=0;i<enc.length;i++) b.push(enc[i]);
     b.push(0x1D,0x28,0x6B,0x03,0x00,0x31,0x51,0x30);      // cetak QR
-    b.push(0x1B,0x64,0x03);                               // maju 3 baris
-    b.push(0x1D,0x56,0x42,0x00);                          // potong kertas
+    b.push(0x1B,0x61,0x00);                               // rata kiri lagi
+    b.push(0x1B,0x64,0x04);                               // maju 4 baris
+    b.push(0x1D,0x56,0x00);                               // potong kertas
     return new Uint8Array(b);
   }
 
   async function bleWrite(data){
-    var packet = 100;
     var noResp = bleChar.properties.writeWithoutResponse || bleChar.properties.writeNoResponse;
-    for(var i=0;i<data.length;i+=packet){
-      var chunk = data.slice(i, i+packet);
-      if(noResp){ await bleChar.writeValueWithoutResponse(chunk); }
-      else { await bleChar.writeValue(chunk); }
-      await new Promise(function(r){ setTimeout(r, 20); });
+    var maxLen = 100;
+    var i = 0;
+    while(i < data.length){
+      var chunk = data.slice(i, Math.min(i + maxLen, data.length));
+      try{
+        if(noResp){ await bleChar.writeValueWithoutResponse(chunk); }
+        else { await bleChar.writeValue(chunk); }
+        i += chunk.length;
+      }catch(err){
+        // MTU kecil: perkecil ukuran paket lalu coba lagi
+        if(maxLen > 20){ maxLen = 20; continue; }
+        if(maxLen > 1){ maxLen = 1; continue; }
+        throw err;
+      }
+      await new Promise(function(r){ setTimeout(r, 12); });
     }
   }
 
   function printViaBluetooth(text){
     if(!bleChar || !text) return Promise.reject(new Error("printer belum siap"));
     return bleWrite(escposQR(text));
+  }
+
+  // Cari karakteristik yang bisa ditulisi: coba layanan printer BLE yang umum, baru sisanya.
+  async function findWritableChar(server){
+    var uuids = [
+      "0000ff00-0000-1000-8000-00805f9b34fb",
+      "0000ffe0-0000-1000-8000-00805f9b34fb",
+      "0000fff0-0000-1000-8000-00805f9b34fb",
+      "000018f0-0000-1000-8000-00805f9b34fb",
+      "49535343-fe7d-4ae5-8fa9-9fafd205e455",
+      "6e40df22-b5a3-f393-e0a9-e50e24dcca9e",
+      "e7810a71-73ae-499d-8c15-faa9aef0c3f2"
+    ];
+    for(var u=0;u<uuids.length;u++){
+      try{
+        var svc = await server.getPrimaryService(uuids[u]);
+        var chars = await svc.getCharacteristics();
+        for(var c=0;c<chars.length;c++){
+          var p = chars[c].properties;
+          if(p.write || p.writeWithoutResponse) return chars[c];
+        }
+      }catch(e){ /* lanjut ke UUID berikutnya */ }
+    }
+    try{
+      var services = await server.getPrimaryServices();
+      for(var s=0;s<services.length;s++){
+        try{
+          var ch = await services[s].getCharacteristics();
+          for(var k=0;k<ch.length;k++){
+            var pr = ch[k].properties;
+            if(pr.write || pr.writeWithoutResponse) return ch[k];
+          }
+        }catch(e){ /* skip service */ }
+      }
+    }catch(e){ /* ignore */ }
+    return null;
   }
 
   window.connectPrinter = async function(){
@@ -1154,23 +1201,17 @@
         acceptAllDevices: true,
         optionalServices: [
           "0000ff00-0000-1000-8000-00805f9b34fb",
-          "49535343-fe7d-4ae5-8fa9-9fafd205e455",
+          "0000ffe0-0000-1000-8000-00805f9b34fb",
+          "0000fff0-0000-1000-8000-00805f9b34fb",
           "000018f0-0000-1000-8000-00805f9b34fb",
-          "a502a5f6-bcb2-41bb-a867-4c0232fadf",
+          "49535343-fe7d-4ae5-8fa9-9fafd205e455",
+          "6e40df22-b5a3-f393-e0a9-e50e24dcca9e",
           "e7810a71-73ae-499d-8c15-faa9aef0c3f2"
         ]
       });
       bleDevice = device;
       var server = await device.gatt.connect();
-      var services = await server.getPrimaryServices();
-      var found = null;
-      for(var s=0;s<services.length && !found;s++){
-        var chars = await services[s].getCharacteristics();
-        for(var c=0;c<chars.length;c++){
-          var p = chars[c].properties;
-          if(p.write || p.writeWithoutResponse){ found = chars[c]; break; }
-        }
-      }
+      var found = await findWritableChar(server);
       if(!found) throw new Error("karakteristik tulis tidak ditemukan");
       bleChar = found;
       printerReady = true;
