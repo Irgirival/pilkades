@@ -107,9 +107,9 @@
     <label>Dusun / Kampung <input id="inDusun" placeholder="cth: Krajan"></label>
     <label>RT / RW <input id="inRtrw" placeholder="cth: 003 / 005"></label>
     <label>No. Urut DPT <input id="inUrut" placeholder="cth: 042"></label>
-    <button class="sample" onclick="isiContoh()">Isi Contoh</button>
+    <button class="sample" onclick="isiContoh()">Isi Data (opsional)</button>
     <button class="print" onclick="window.print()">Cetak Undangan (A4)</button>
-    <div class="hint">Uji coba: satu QR di bawah ini berlaku untuk <b>semua</b> pemilih. Scan QR ini di halaman awal aplikasi untuk langsung memilih.</div>
+    <div class="hint">Uji coba: <b>satu QR berlaku untuk semua pemilih</b> — cukup fotocopy lembar ini, <b>tidak perlu menulis nama</b>. Scan QR di halaman awal aplikasi untuk langsung memilih.</div>
   </div>
 
   <!-- Lembar A4 -->
@@ -148,7 +148,7 @@
       </div>
 
       <div class="isi">
-        <p>Harap hadir tepat waktu dengan <b>menunjukkan QR pada undangan ini</b> kepada pemindai di TPS untuk mulai menggunakan hak pilih. Undangan ini hanya memuat QR, tanpa mencantumkan pilihan (rahasia).</p>
+        <p>Harap hadir tepat waktu dengan <b>menunjukkan QR pada undangan ini</b> kepada pemindai di TPS untuk mulai menggunakan hak pilih. QR pada undangan ini <b>bersifat umum dan dapat difotokopi</b> — tidak perlu menuliskan nama; satu QR berlaku untuk semua pemilih.</p>
       </div>
 
       <div class="bawah">
@@ -156,7 +156,7 @@
           <div class="cap">QR Masuk Tempat Pemungutan Suara</div>
           <div id="qr"></div>
           <div class="kode mono" id="kodeText">UND-KASOMALANGKULON</div>
-          <div class="cat">Berlaku untuk semua pemilih (uji coba)</div>
+          <div class="cat">Satu QR untuk semua &bull; tanpa perlu nama</div>
         </div>
         <div class="ttd">
           <div class="tempat">Kasomalang Kulon, 01 November 2026</div>
@@ -202,13 +202,13 @@
   bind("inUrut","outUrut");
 
   function isiContoh(){
-    var d = { inNama:"Budi Santoso", inDusun:"Krajan", inRtrw:"003 / 005", inUrut:"042" };
+    var d = { inNama:"Warga Desa Kasomalang Kulon", inDusun:"Semua Dusun / Kampung", inRtrw:"—", inUrut:"—" };
     for(var k in d){ document.getElementById(k).value = d[k]; }
     document.getElementById("outNama").textContent = d.inNama;
     document.getElementById("outDusun").textContent = d.inDusun;
     document.getElementById("outRtrw").textContent = d.inRtrw;
     document.getElementById("outUrut").textContent = d.inUrut;
-    document.getElementById("outTps").textContent = "TPS 01 — Dusun " + d.inDusun;
+    document.getElementById("outTps").textContent = "Sesuai domisili masing-masing";
   }
 
   renderQR();

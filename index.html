@@ -1093,8 +1093,8 @@
 
   function setPrintStatus(msg){ var el = document.getElementById("printStatus"); if(el) el.textContent = msg || ""; }
 
-  // Cetak otomatis setelah memilih: pakai printer Bluetooth jika tersambung,
-  // jika tidak, buka dialog cetak browser (bisa pilih printer resi/thermal).
+  // Cetak otomatis setelah memilih: LANGSUNG cetak ke printer Bluetooth (tanpa dialog).
+  // Tidak ada pilihan save-as-PDF/print dari browser; jika printer belum tersambung, hanya tampilkan status.
   window.autoPrint = function(){
     setPrintStatus("");
     if(printerReady && bleChar){
@@ -1102,31 +1102,12 @@
       printViaBluetooth(lastPrintCode).then(function(){
         setPrintStatus("Terkirim ke printer. Silakan ambil resi.");
       }).catch(function(){
-        setPrintStatus("Printer bermasalah, membuka dialog cetak...");
-        fallbackPrint();
+        setPrintStatus("Gagal cetak. Pastikan printer Bluetooth masih tersambung.");
       });
     }else{
-      fallbackPrint();
+      setPrintStatus("Printer belum tersambung. Hubungkan Printer Bluetooth di halaman scan.");
     }
   };
-
-  function fallbackPrint(){
-    var dataUrl = "";
-    var canvas = document.querySelector("#receiptQR canvas");
-    var img = document.querySelector("#receiptQR img");
-    if(img && img.src){ dataUrl = img.src; }
-    if(!dataUrl && canvas && canvas.toDataURL){ try{ dataUrl = canvas.toDataURL("image/png"); }catch(e){ /* ignore */ } }
-    if(!dataUrl){ setPrintStatus("QR belum siap untuk dicetak."); return; }
-    var css = "body{margin:0;padding:16px;background:#fff;text-align:center;}img{width:220px;height:220px;max-width:100%;}";
-    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QR Bukti Pilih</title><style>'+css+'</style></head><body><img src="'+dataUrl+'"></body></html>';
-    var w = window.open("", "_blank", "width=380,height=420");
-    if(!w){ setPrintStatus("Izinkan popup untuk mencetak, atau hubungkan printer Bluetooth."); return; }
-    w.document.open();
-    w.document.write(html);
-    w.document.close();
-    setPrintStatus("Dialog cetak dibuka. Pilih printer resi/thermal.");
-    setTimeout(function(){ try{ w.focus(); w.print(); }catch(e){ /* ignore */ } }, 450);
-  }
 
   // ---------- PRINTER RESI BLUETOOTH (ESC/POS via Web Bluetooth) ----------
   function escposQR(text){
