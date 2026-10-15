@@ -613,6 +613,30 @@
     margin-bottom:18px;
   }
   .verified-badge svg{width:14px;height:14px;}
+
+  .cam-auto{display:none;margin:8px auto 0;font-size:0.72rem;color:var(--hijau);font-weight:700;text-align:center;}
+  .cam-auto.show{display:block;}
+
+  /* ---------- RESI / BUKTI PILIH ---------- */
+  .receipt{background:#fff;border:1px dashed #a5a5a5;border-radius:6px;max-width:260px;margin:8px auto 0;padding:14px 14px 16px;font-family:"Courier New",monospace;color:#141414;text-align:center;}
+  .receipt .rc-title{font-weight:bold;font-size:0.82rem;letter-spacing:0.02em;line-height:1.25;}
+  .receipt .rc-sub{font-size:0.72rem;margin-top:2px;color:#333;}
+  .receipt .rc-rule{border-top:1px dashed #bbb;margin:8px 0;}
+  .receipt .rc-kv{display:flex;justify-content:space-between;font-size:0.72rem;margin:2px 0;}
+  .receipt .rc-calon{font-weight:bold;font-size:0.98rem;margin:6px 0 2px;}
+  .receipt .rc-barcode{margin:8px 0 2px;}
+  .receipt .rc-barcode svg{max-width:100%;height:auto;display:block;margin:0 auto;}
+  .receipt .rc-code{font-size:0.58rem;word-break:break-all;color:#444;}
+  .receipt .rc-foot{font-size:0.6rem;line-height:1.4;color:#444;margin-top:8px;}
+  .receipt .rc-qr{display:flex;justify-content:center;align-items:center;}
+  .receipt .rc-qr img,.receipt .rc-qr canvas{display:block;max-width:100%;}
+
+  /* ---------- HASIL SCAN BARCODE ---------- */
+  .res-badge{display:inline-block;background:var(--hijau);color:#fff;font-weight:800;font-size:0.72rem;letter-spacing:0.05em;padding:6px 12px;border-radius:999px;margin-bottom:8px;}
+  .res-sub{font-size:0.8rem;color:var(--ink-soft);margin-bottom:12px;}
+  .res-no{font-family:"Fraunces",serif;font-weight:800;font-size:2.6rem;color:var(--merah);line-height:1;}
+  .res-nama{font-size:1.1rem;font-weight:700;margin-top:6px;}
+  .res-id{font-size:0.74rem;color:var(--ink-soft);margin-top:8px;}
 </style>
 </head>
 <body>
@@ -632,7 +656,7 @@
   <section class="screen active" id="screen-scan">
     <div class="scan-wrap">
       <h2>Scan Undangan Memilih</h2>
-      <p>Arahkan kamera ke kode QR/barcode pada undangan Anda, atau ketik kode undangan lalu tekan Enter.</p>
+      <p>Scan kode QR/barcode pada undangan untuk mulai memilih, atau scan barcode resi untuk melihat nomor pilihan. Bisa juga ketik kode manual lalu tekan Enter.</p>
 
       <div class="scan-camera-box" id="scanCameraBox">
         <div id="qr-reader-region"></div>
@@ -651,6 +675,8 @@
         <div class="scan-frame-corner" id="scanFrameCorner" style="display:none;"></div>
       </div>
 
+      <div class="cam-auto" id="camAutoNote">Kamera otomatis aktif lagi karena sudah pernah dinyalakan.</div>
+
       <button class="btn btn-outline" id="btnStartCamera" onclick="toggleCameraScan()">Aktifkan Kamera</button>
 
       <div class="scan-divider">atau masukkan kode manual</div>
@@ -663,6 +689,13 @@
 
       <div style="margin-top:16px;">
         <button class="btn-ghost" onclick="fillDemoCode()">Gunakan kode demo (uji coba)</button>
+      </div>
+      <div class="footer-links">
+        <a class="btn-ghost" href="hasil-pilkades.html" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">› Halaman Rekap Panitia</a>
+        <a class="btn-ghost" href="undangan.html" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;">› Contoh Undangan (A4)</a>
+      </div>
+      <div style="margin-top:10px;">
+        <button class="btn btn-outline" id="btnConnectPrinter" onclick="connectPrinter()" style="font-size:0.82rem;padding:8px 16px;">Hubungkan Printer Bluetooth</button>
       </div>
     </div>
   </section>
@@ -708,20 +741,27 @@
   </div>
 </div>
 
-<!-- ===================== MODAL SUKSES ===================== -->
+<!-- ===================== MODAL SUKSES (auto-print) ===================== -->
 <div class="overlay" id="successOverlay">
   <div class="modal">
-    <div class="stamp" style="margin-bottom:16px;">
+    <div class="stamp" style="margin-bottom:12px;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M20 6L9 17l-5-5"/>
       </svg>
     </div>
-    <h2 style="font-size:1.4rem;margin-bottom:8px;">Pilihan Berhasil!</h2>
-    <p id="thankyouDetail" style="color:var(--ink-soft);font-size:0.92rem;margin-bottom:8px;">Suara Anda telah berhasil direkam.</p>
+    <h2 style="font-size:1.4rem;margin-bottom:6px;">Pilihan Berhasil!</h2>
+    <p id="thankyouDetail" style="color:var(--ink-soft);font-size:0.9rem;margin-bottom:2px;">Suara Anda telah berhasil direkam.</p>
+    <p id="printStatus" style="color:var(--hijau);font-size:0.85rem;font-weight:700;margin:2px 0 6px;"></p>
     <div class="countdown" id="countdownText"></div>
   </div>
 </div>
 
+<!-- Holder QR tersembunyi untuk keperluan cetak otomatis -->
+<div id="receiptQR" style="position:fixed;left:-9999px;top:0;width:200px;height:200px;"></div>
+
+<!-- ===================== MODAL SUKSES + RESI ===================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js"></script>
 <script>
 (function(){
@@ -729,12 +769,27 @@
 
   var CANDIDATES = window.CANDIDATES || [];
   var STORAGE_KEY = "pilkades_votes_" + (window.DESA_NAME || "desa").replace(/\s+/g,"_").toLowerCase();
+
+  // Simpan daftar calon (tanpa foto) agar bisa dibaca halaman rekap panitia.
+  try{
+    var _roster = CANDIDATES.map(function(c){ return { no: c.no, nama: c.nama, moto: c.moto || "" }; });
+    if(_roster.length){ localStorage.setItem("pilkades_roster", JSON.stringify(_roster)); }
+    localStorage.setItem("pilkades_meta", JSON.stringify({ desa: window.DESA_NAME || "", kec: window.KEC_NAME || "" }));
+  }catch(e){ /* ignore */ }
   var USED_CODES_KEY = STORAGE_KEY + "_kode_terpakai";
   var selected = null;
   var countdownTimer = null;
   var currentInviteCode = null;
   var html5QrCodeInstance = null;
   var cameraActive = false;
+  var cameraEnabledOnce = false;
+
+  // Kode undangan BERSAMA (uji coba): satu QR/barcode bisa dipakai semua orang.
+  var SHARED_INVITE = "UND-KASOMALANGKULON";
+  var lastPrintCode = null;
+  var bleChar = null;         // karakteristik tulis printer BLE
+  var bleDevice = null;
+  var printerReady = false;   // printer bluetooth tersambung
 
   function safeGetUsedCodes(){
     try{
@@ -767,7 +822,20 @@
   function handleScannedCode(rawCode){
     var code = (rawCode || "").trim();
     if(!code){
-      showScanMsg("Kode undangan tidak boleh kosong.", "error");
+      showScanMsg("Kode tidak dikenali.", "error");
+      return;
+    }
+    if(code.indexOf("PKD|") === 0){
+      showScanMsg("Ini barcode hasil pilih. Silakan scan di halaman Rekap Panitia.", "error");
+      return;
+    }
+    if(SHARED_INVITE && code.toUpperCase() === SHARED_INVITE.toUpperCase()){
+      // Kode bersama: boleh dipakai semua orang, tidak ditandai terpakai.
+      currentInviteCode = null;
+      showScanMsg("Undangan diterima. Membuka surat suara...", "success");
+      stopCameraScan();
+      document.getElementById("codeInput").value = "";
+      setTimeout(function(){ showScanMsg("", ""); goTo("vote"); }, 450);
       return;
     }
     if(isCodeUsed(code)){
@@ -829,9 +897,11 @@
         function(){ /* ignore per-frame scan errors */ }
       ).then(function(){
         cameraActive = true;
+        cameraEnabledOnce = true;
         document.getElementById("scanPlaceholder").style.display = "none";
         document.getElementById("scanFrameCorner").style.display = "block";
         document.getElementById("btnStartCamera").textContent = "Matikan Kamera";
+        var note = document.getElementById("camAutoNote"); if(note) note.classList.add("show");
         showScanMsg("", "");
       }).catch(function(err){
         showScanMsg("Tidak bisa mengakses kamera. Gunakan kode manual di bawah.", "error");
@@ -966,10 +1036,12 @@
 
     document.getElementById("thankyouDetail").textContent =
       "Suara Anda untuk Calon Nomor " + selected.no + " (" + selected.nama + ") telah berhasil direkam.";
+    buildReceipt(selected);
     document.getElementById("confirmOverlay").classList.remove("show");
     selected = null;
     document.getElementById("successOverlay").classList.add("show");
     startCountdown();
+    autoPrint(); // otomatis kirim ke printer resi (Bluetooth) / fallback dialog cetak
   };
 
   function startCountdown(){
@@ -994,6 +1066,144 @@
     currentInviteCode = null;
     goTo("scan");
   };
+
+  window.finishSuccess = function(){
+    clearInterval(countdownTimer);
+    goTo("scan");
+  };
+
+  function buildReceipt(c){
+    var uid = Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2,6).toUpperCase();
+    var codeText = "PKD|" + c.no + "|" + uid;
+    lastPrintCode = codeText;
+    // Resi HANYA berisi QR (kotak), tanpa nomor/nama/teks apa pun (rahasia).
+    // QR menyimpan pilihan untuk dipindai panitia.
+    var box = document.getElementById("receiptQR");
+    if(box){
+      box.innerHTML = "";
+      if(typeof QRCode !== "undefined"){
+        try{
+          new QRCode(box, { text: codeText, width: 200, height: 200, colorDark: "#111111", colorLight: "#ffffff", correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel.M) || 0 });
+        }catch(e){ /* ignore */ }
+      }else{
+        box.innerHTML = '<div style="font-family:monospace;font-size:0.6rem;word-break:break-all;max-width:200px;">'+codeText+'</div>';
+      }
+    }
+  }
+
+  function setPrintStatus(msg){ var el = document.getElementById("printStatus"); if(el) el.textContent = msg || ""; }
+
+  // Cetak otomatis setelah memilih: pakai printer Bluetooth jika tersambung,
+  // jika tidak, buka dialog cetak browser (bisa pilih printer resi/thermal).
+  window.autoPrint = function(){
+    setPrintStatus("");
+    if(printerReady && bleChar){
+      setPrintStatus("Mengirim QR ke printer Bluetooth...");
+      printViaBluetooth(lastPrintCode).then(function(){
+        setPrintStatus("Terkirim ke printer. Silakan ambil resi.");
+      }).catch(function(){
+        setPrintStatus("Printer bermasalah, membuka dialog cetak...");
+        fallbackPrint();
+      });
+    }else{
+      fallbackPrint();
+    }
+  };
+
+  function fallbackPrint(){
+    var dataUrl = "";
+    var canvas = document.querySelector("#receiptQR canvas");
+    var img = document.querySelector("#receiptQR img");
+    if(img && img.src){ dataUrl = img.src; }
+    if(!dataUrl && canvas && canvas.toDataURL){ try{ dataUrl = canvas.toDataURL("image/png"); }catch(e){ /* ignore */ } }
+    if(!dataUrl){ setPrintStatus("QR belum siap untuk dicetak."); return; }
+    var css = "body{margin:0;padding:16px;background:#fff;text-align:center;}img{width:220px;height:220px;max-width:100%;}";
+    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QR Bukti Pilih</title><style>'+css+'</style></head><body><img src="'+dataUrl+'"></body></html>';
+    var w = window.open("", "_blank", "width=380,height=420");
+    if(!w){ setPrintStatus("Izinkan popup untuk mencetak, atau hubungkan printer Bluetooth."); return; }
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+    setPrintStatus("Dialog cetak dibuka. Pilih printer resi/thermal.");
+    setTimeout(function(){ try{ w.focus(); w.print(); }catch(e){ /* ignore */ } }, 450);
+  }
+
+  // ---------- PRINTER RESI BLUETOOTH (ESC/POS via Web Bluetooth) ----------
+  function escposQR(text){
+    var enc = new TextEncoder().encode(text);
+    var b = [];
+    b.push(0x1B,0x40);                                    // init
+    b.push(0x1D,0x28,0x6B,0x04,0x00,0x31,0x41,0x32,0x00); // model 2
+    b.push(0x1D,0x28,0x6B,0x03,0x00,0x31,0x43,0x06);      // ukuran modul 6
+    b.push(0x1D,0x28,0x6B,0x03,0x00,0x31,0x45,0x31);      // koreksi error M
+    var len = enc.length + 3;
+    b.push(0x1D,0x28,0x6B,(len & 0xFF),(len >> 8) & 0xFF,0x31,0x50,0x30); // simpan data
+    for(var i=0;i<enc.length;i++) b.push(enc[i]);
+    b.push(0x1D,0x28,0x6B,0x03,0x00,0x31,0x51,0x30);      // cetak QR
+    b.push(0x1B,0x64,0x03);                               // maju 3 baris
+    b.push(0x1D,0x56,0x42,0x00);                          // potong kertas
+    return new Uint8Array(b);
+  }
+
+  async function bleWrite(data){
+    var packet = 100;
+    var noResp = bleChar.properties.writeWithoutResponse || bleChar.properties.writeNoResponse;
+    for(var i=0;i<data.length;i+=packet){
+      var chunk = data.slice(i, i+packet);
+      if(noResp){ await bleChar.writeValueWithoutResponse(chunk); }
+      else { await bleChar.writeValue(chunk); }
+      await new Promise(function(r){ setTimeout(r, 20); });
+    }
+  }
+
+  function printViaBluetooth(text){
+    if(!bleChar || !text) return Promise.reject(new Error("printer belum siap"));
+    return bleWrite(escposQR(text));
+  }
+
+  window.connectPrinter = async function(){
+    var btn = document.getElementById("btnConnectPrinter");
+    if(!navigator.bluetooth){
+      alert("Web Bluetooth tidak didukung browser ini. Gunakan Google Chrome di Android/desktop, atau cetak lewat dialog cetak dengan printer thermal yang terpasang di sistem.");
+      return;
+    }
+    try{
+      if(btn) btn.textContent = "Mencari printer...";
+      var device = await navigator.bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: [
+          "0000ff00-0000-1000-8000-00805f9b34fb",
+          "49535343-fe7d-4ae5-8fa9-9fafd205e455",
+          "000018f0-0000-1000-8000-00805f9b34fb",
+          "a502a5f6-bcb2-41bb-a867-4c0232fadf",
+          "e7810a71-73ae-499d-8c15-faa9aef0c3f2"
+        ]
+      });
+      bleDevice = device;
+      var server = await device.gatt.connect();
+      var services = await server.getPrimaryServices();
+      var found = null;
+      for(var s=0;s<services.length && !found;s++){
+        var chars = await services[s].getCharacteristics();
+        for(var c=0;c<chars.length;c++){
+          var p = chars[c].properties;
+          if(p.write || p.writeWithoutResponse){ found = chars[c]; break; }
+        }
+      }
+      if(!found) throw new Error("karakteristik tulis tidak ditemukan");
+      bleChar = found;
+      printerReady = true;
+      device.addEventListener("gattserverdisconnected", function(){ printerReady = false; if(btn){ btn.textContent = "Hubungkan Printer Bluetooth"; } });
+      if(btn) btn.textContent = "Printer tersambung: " + (device.name || "BLE");
+      setPrintStatus("Printer Bluetooth tersambung.");
+    }catch(e){
+      printerReady = false;
+      if(btn) btn.textContent = "Hubungkan Printer Bluetooth";
+      alert("Gagal menyambung printer: " + (e && e.message ? e.message : e));
+    }
+  };
+
+  window.closeResult = function(){ /* dipindah ke halaman hasil-pilkades.html */ };
 
   function isFullscreen(){
     return !!(document.fullscreenElement || document.webkitFullscreenElement);
@@ -1032,9 +1242,17 @@
     var leavingScan = document.getElementById("screen-scan").classList.contains("active") && name !== "scan";
     if(leavingScan && cameraActive){ stopCameraScan(); }
     var so = document.getElementById("successOverlay"); if(so) so.classList.remove("show");
+    var ro = document.getElementById("resultOverlay"); if(ro) ro.classList.remove("show");
     document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
     var target = document.getElementById("screen-" + name);
     if(target) target.classList.add("active");
+    if(name === "scan" && cameraEnabledOnce && !cameraActive && typeof Html5Qrcode !== "undefined"){
+      setTimeout(function(){
+        if(!cameraActive && document.getElementById("screen-scan").classList.contains("active")){
+          try{ window.toggleCameraScan(); }catch(e){ /* ignore */ }
+        }
+      }, 300);
+    }
   };
 
   renderCandidates();
