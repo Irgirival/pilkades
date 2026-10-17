@@ -244,18 +244,15 @@
 
   .candidates{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:16px;
-  }
-  @media (max-width:720px){
-    .candidates{grid-template-columns:1fr;}
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:clamp(6px,1vw,14px);
   }
 
   .candidate-card{
     background:var(--paper);
     border:2.5px solid var(--line);
     border-radius:14px;
-    padding:18px 14px 20px;
+    padding:clamp(10px,1.2vw,16px) 6px 12px;
     text-align:center;
     cursor:pointer;
     position:relative;
@@ -267,23 +264,23 @@
   .candidate-card:active{transform:scale(0.98);}
 
   .no-badge{
-    width:38px;height:38px;
+    width:clamp(24px,2.6vw,34px);height:clamp(24px,2.6vw,34px);
     border-radius:50%;
     background:var(--merah);
     color:#fff;
     font-family:"Fraunces",serif;
     font-weight:700;
-    font-size:1.05rem;
+    font-size:clamp(0.7rem,1vw,0.95rem);
     display:flex;align-items:center;justify-content:center;
-    margin:0 auto 12px;
+    margin:0 auto 8px;
     cursor:pointer;
   }
   .foto-frame{
     width:100%;
-    max-width:190px;
+    max-width:150px;
     aspect-ratio:4/5;
-    margin:0 auto 14px;
-    border:3px solid var(--wood);
+    margin:0 auto 10px;
+    border:2px solid var(--wood);
     border-radius:8px;
     background:var(--paper-2);
     display:flex;align-items:center;justify-content:center;
@@ -292,7 +289,7 @@
   }
   .foto-frame .initial{
     font-family:"Fraunces",serif;
-    font-size:4.2rem;
+    font-size:clamp(1.8rem,3vw,3rem);
     font-weight:600;
     color:var(--ink-soft);
   }
@@ -300,19 +297,18 @@
   .cand-nama{
     font-family:"Fraunces",serif;
     font-weight:700;
-    font-size:1.08rem;
+    font-size:clamp(0.62rem,0.95vw,0.9rem);
     margin-bottom:4px;
     line-height:1.25;
   }
   .cand-moto{
-    font-size:0.78rem;
+    font-size:clamp(0.52rem,0.72vw,0.7rem);
     color:var(--ink-soft);
     line-height:1.35;
-    min-height:2.2em;
   }
   .tap-hint{
-    margin-top:12px;
-    font-size:0.72rem;
+    margin-top:8px;
+    font-size:clamp(0.5rem,0.66vw,0.66rem);
     color:var(--ink-soft);
     letter-spacing:0.02em;
   }
@@ -323,15 +319,15 @@
   .pick-box{
     display:none;
     width:100%;
-    margin-top:12px;
-    padding:11px 12px;
+    margin-top:8px;
+    padding:8px 6px;
     border:0;
-    border-radius:10px;
+    border-radius:9px;
     background:var(--merah);
     color:#fff;
     font-family:inherit;
     font-weight:800;
-    font-size:0.85rem;
+    font-size:clamp(0.56rem,0.78vw,0.76rem);
     cursor:pointer;
   }
   .pick-box:active{ transform:translateY(1px); }
@@ -1014,7 +1010,7 @@
 
       var hint = document.createElement("div");
       hint.className = "tap-hint";
-      hint.textContent = "Sentuh foto untuk menandai";
+      hint.textContent = "Sentuh untuk menandai";
 
       var pickBox = document.createElement("button");
       pickBox.type = "button";
