@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beatmap Alur Memilih — Pilkades Kasomalang Kulon 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --merah:#9E1B26; --merah-muda:#C62828; --putih:#FFFFFF; --paper:#FBF7EF;
+    --ink:#241F17; --ink-soft:#6E675C; --line:#E4DCCE; --gold:#C9A227;
+    --biru:#1E5FA8; --abu:#8E8E8E; --hijau:#2E7D32; --kayu:#8B5A2B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+    background:var(--paper); color:var(--ink); line-height:1.55;
+    padding-bottom:60px;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 18px;}
+
+  /* ---------- KOP ---------- */
+  header{
+    background:linear-gradient(160deg,var(--merah) 0%,#6d0f17 100%);
+    color:#fff;padding:34px 18px 30px;text-align:center;
+    border-bottom:6px solid var(--gold);
+  }
+  header .kop{font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;opacity:0.85;}
+  header h1{font-family:"Fraunces",serif;font-weight:800;font-size:clamp(1.5rem,4vw,2.4rem);margin:8px 0 4px;}
+  header .sub{font-size:0.9rem;opacity:0.9;}
+  header .lok{font-size:0.78rem;opacity:0.75;margin-top:6px;}
+
+  /* ---------- LEGENDA ---------- */
+  .legenda{
+    display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+    margin:22px 0 6px;font-size:0.75rem;font-weight:700;
+  }
+  .legenda span{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;background:#fff;border:1.5px solid var(--line);}
+  .dot{width:12px;height:12px;border-radius:50%;display:inline-block;}
+  .dot.w{background:var(--merah);} .dot.p{background:var(--biru);} .dot.k{background:var(--hijau);}
+
+  /* ---------- TIMELINE ---------- */
+  .alir{position:relative;margin-top:26px;}
+  .alir::before{
+    content:"";position:absolute;left:26px;top:0;bottom:0;width:4px;
+    background:repeating-linear-gradient(to bottom,var(--merah) 0 14px,transparent 14px 24px);
+    border-radius:2px;opacity:0.35;
+  }
+  .step{position:relative;padding:0 0 26px 68px;}
+  .step:last-child{padding-bottom:0;}
+  .ball{
+    position:absolute;left:0;top:0;width:54px;height:54px;border-radius:50%;
+    background:var(--merah);color:#fff;font-family:"Fraunces",serif;font-weight:800;
+    font-size:1.15rem;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 3px 0 #6d0f17;z-index:1;
+  }
+  .ball.panitia{background:var(--hijau);box-shadow:0 3px 0 #1b5e20;}
+  .card{
+    background:#fff;border:2px solid var(--line);border-radius:14px;
+    padding:16px 18px;box-shadow:0 2px 8px rgba(36,31,23,0.05);
+  }
+  .card h2{font-family:"Fraunces",serif;font-size:1.08rem;margin-bottom:4px;color:var(--merah);}
+  .card h2 .who{font-size:0.66rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;
+    display:inline-block;vertical-align:middle;margin-left:8px;padding:3px 9px;border-radius:999px;}
+  .who.pemilih{background:#FBE9EA;color:var(--merah);}
+  .who.panitia{background:#E7F3E8;color:var(--hijau);}
+  .card p{font-size:0.86rem;color:var(--ink-soft);}
+  .card p b{color:var(--ink);}
+  .chip{display:inline-block;font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:999px;margin:8px 6px 0 0;}
+  .chip.merah{background:var(--merah);color:#fff;}
+  .chip.biru{background:var(--biru);color:#fff;}
+  .chip.abu{background:var(--abu);color:#fff;}
+  .chip.emas{background:#FFF3D6;color:#8a6d10;border:1.5px solid var(--gold);}
+
+  /* percabangan Ulangi */
+  .cabang{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+  @media (max-width:560px){.cabang{grid-template-columns:1fr;}}
+  .cabang div{border-radius:11px;padding:12px 14px;font-size:0.8rem;font-weight:700;color:#fff;}
+  .cabang .b{background:var(--biru);}
+  .cabang .a{background:var(--abu);}
+  .cabang small{display:block;font-weight:600;opacity:0.9;margin-top:4px;}
+
+  .panah-txt{ text-align:center;font-size:0.78rem;color:var(--merah);font-weight:800;margin:2px 0 10px;}
+
+  /* ---------- INFO PENTING ---------- */
+  .info{margin-top:38px;}
+  .info h3{font-family:"Fraunces",serif;font-size:1.25rem;color:var(--merah);margin-bottom:14px;text-align:center;}
+  .grid-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;}
+  .box-info{background:#fff;border:2px solid var(--line);border-left:6px solid var(--gold);border-radius:12px;padding:14px 16px;}
+  .box-info b{display:block;font-size:0.88rem;margin-bottom:4px;}
+  .box-info span{font-size:0.78rem;color:var(--ink-soft);}
+
+  /* ---------- CALON ---------- */
+  .calon-strip{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
+  .calon-strip a{
+    text-decoration:none;font-size:0.75rem;font-weight:800;color:#fff;background:var(--kayu);
+    padding:7px 13px;border-radius:999px;
+  }
+
+  /* ---------- TAUTAN ---------- */
+  .tautan{margin-top:34px;text-align:center;}
+  .tautan a{
+    display:inline-block;text-decoration:none;font-weight:800;font-size:0.85rem;
+    padding:11px 20px;border-radius:11px;margin:5px 6px;color:#fff;background:var(--merah);
+    box-shadow:0 3px 0 #6d0f17;
+  }
+  .tautan a.g{background:var(--hijau);box-shadow:0 3px 0 #1b5e20;}
+  .tautan a.k{background:var(--kayu);box-shadow:0 3px 0 #5f3d1d;}
+
+  footer{text-align:center;margin-top:34px;font-size:0.72rem;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kop">Panitia Pemilihan Kepala Desa · PPKDES</div>
+    <h1>Beatmap Alur Memilih</h1>
+    <div class="sub">Pilkades Kasomalang Kulon 2026 — Digital</div>
+    <div class="lok">Kecamatan Kasomalang, Kabupaten Subang</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="legenda">
+    <span><i class="dot w"></i> Jalur Pemilih</span>
+    <span><i class="dot k"></i> Jalur Panitia</span>
+    <span><i class="dot p"></i> Tombol Konfirmasi</span>
+  </div>
+
+  <div class="alir">
+
+    <div class="step">
+      <div class="ball">1</div>
+      <div class="card">
+        <h2>Undangan Dibagikan</h2>
+        <p>Warga menerima <b>undangan A4</b> berisi satu <b>QR bersama</b> yang berlaku untuk semua.
+        Cukup <b>difotocopy</b> — <b>tidak perlu menulis nama</b> apa pun. Ini masa sosialisasi, jadi satu QR dipakai bergantian.</p>
+        <span class="chip emas">QR: UND-KASOMALANGKULON</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="ball">2</div>
+      <div class="card">
+        <h2>Scan Undangan di TPS</h2>
+        <p>Pemilih menyalakan <b>kamera</b> pada perangkat TPS lalu memindai QR undangan.
+        Bisa juga <b>ketik kode manual</b> bila QR rusak. Kode yang sah membuka surat suara; resi hasil memilih <b>tolak</b> bila discan di sini.</p>
+        <span class="chip merah">Scan QR</span><span class="chip merah">atau Ketik Kode</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="ball">3</div>
+      <div class="card">
+        <h2>Surat Suara Terbuka — 5 Calon</h2>
+        <p>Layar menampilkan <b>5 calon satu baris</b> dengan nomor <b>66 · 67 · 68 · 69 · 70</b>, lengkap foto animasi, nama, dan moto masing-masing.</p>
+        <div class="calon-strip">
+          <a>66 · Liam Carter</a><a>67 · Noah Fischer</a><a>68 · Ethan Walsh</a><a>69 · Marco De Luca</a><a>70 · Kenji Sato</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="ball">4</div>
+      <div class="card">
+        <h2>Tandai Calon Pilihan</h2>
+        <p><b>Sentuh kartu</b> calon yang dipilih → muncul <b>bingkai merah</b> dan tulisan ditandai.
+        Boleh mencoba-coba: klik kartu lain akan memindahkan tanda, klik kartu yang sama dua kali untuk melepas.
+        <b>Belum ada suara yang terekam</b> pada tahap ini.</p>
+        <span class="chip merah">Bingkai Merah = Tertandai</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="ball">5</div>
+      <div class="card">
+        <h2>Tekan Tombol "Pilih Kandidat Ini"</h2>
+        <p>Di bawah barisan calon terdapat <b>satu tombol panjang</b>. Saat belum ada calon ditandai, tombol <b>abu-abu (tidak bisa ditekan)</b>.
+        Setelah ada calon ditandai, tombol berubah <b>merah</b> dan siap ditekan.</p>
+        <span class="chip abu">Abu-abu: belum ada pilihan</span><span class="chip merah">Merah: siap dipilih</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="ball">6</div>
+      <div class="card">
+        <h2>Modal Konfirmasi</h2>
+        <p>Muncul kotak berisi <b>foto dan nama calon</b> yang ditandai. Di bawahnya ada dua tombol:</p>
+        <div class="cabang">
+          <div class="a">⟲ ULANGI (kiri, abu-abu)<small>Kembali ke surat suara, tanda dihapus, boleh pilih calon lain.</small></div>
+          <div class="b">✓ PILIH (kanan, biru)<small>Suara resmi tercatat. Tidak bisa diubah lagi.</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="ball">7</div>
+      <div class="card">
+        <h2>Suara Masuk + Resi Auto-Cetak</h2>
+        <p>Setelah <b>Pilih</b>, suara langsung terekam dan <b>printer termal Bluetooth mencetak resi secara otomatis</b> — tanpa dialog apa pun.
+        Resi <b>hanya berisi QR kotak</b>: tanpa nomor, tanpa nama (rahasia terjaga). Nomor pilihan tersembunyi di dalam QR.</p>
+        <span class="chip merah">QR-Only · Rahasia</span><span class="chip emas">72mm Thermal</span>
+        <div class="panah-txt">↩ Jika salah tekan Ulangi di langkah 6, kembali ke langkah 4</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="ball">8</div>
+      <div class="card">
+        <h2>Resi Dibawa Pulang <span class="who pemilih">Pemilih</span></h2>
+        <p>Resi QR adalah <b>tanda bukti ikut memilih</b> (bukan tanda pilihan). Layar lalu menghitung mundur 5 detik dan <b>otomatis kembali ke halaman scan</b> untuk pemilih berikutnya.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="ball panitia">9</div>
+      <div class="card">
+        <h2>Rekap Panitia <span class="who panitia">Panitia</span></h2>
+        <p>Panitia membuka <b>halaman Rekap</b>, lalu <b>scan resi QR</b> satu per satu. Sistem menghitung suara per nomor,
+        <b>mendeteksi duplikat</b> (resi yang sama discan dua kali ditolak), dan menampilkan <b>pemimpin sementara</b> secara langsung.
+        Data tersimpan di perangkat — bisa dilihat bergantian di beberapa tab.</p>
+        <span class="chip biru">Live Tally</span><span class="chip biru">Anti-Duplikat</span>
+      </div>
+    </div>
+
+  </div><!-- /.alir -->
+
+  <div class="info">
+    <h3>Yang Perlu Diketahui Warga</h3>
+    <div class="grid-info">
+      <div class="box-info"><b>🔒 Rahasia</b><span>Resi hanya QR tanpa nama &amp; nomor pilihan. Yang tahu pilihan Anda hanya Anda sendiri.</span></div>
+      <div class="box-info"><b>📞 Satu QR untuk Semua</b><span>Fotocopy undangan, sebar ke warga. Tidak perlu tulis nama — cukup scan di TPS.</span></div>
+      <div class="box-info"><b>⟲ Boleh Ulangi</b><span>Sebelum tekan tombol biru "Pilih", Anda bebas ganti pilihan lewat "Ulangi".</span></div>
+      <div class="box-info"><b>🖨️ Resi Langsung Cetak</b><span>Setelah memilih, resi QR otomatis terbit dari printer Bluetooth. Tidak ada langkah cetak manual.</span></div>
+    </div>
+  </div>
+
+  <div class="tautan">
+    <a href="index.html">▶ Coba Aplikasi Memilih</a>
+    <a class="k" href="undangan.html">📄 Contoh Undangan (A4)</a>
+    <a class="g" href="hasil-pilkades.html">📊 Halaman Rekap Panitia</a>
+  </div>
+
+  <footer>Dibuat untuk sosialisasi Pilkades Kasomalang Kulon 2026 · Kecamatan Kasomalang, Kabupaten Subang</footer>
+</div>
+
+</body>
+</html>
