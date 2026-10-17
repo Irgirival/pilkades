@@ -74,6 +74,14 @@
   .data .titik{ flex:1; }
 
   .bawah{ display:flex; gap:16px; align-items:flex-end; margin-top:auto; padding-top:14px; }
+  /* Baris bawah kop: QR di kiri, judul surat di tengah */
+  .atas{ display:flex; align-items:center; gap:18px; margin:14px 0 6px; }
+  .atas .qbox{ flex:0 0 auto; order:0; }
+  .atas .judul-wrap{ flex:1; margin:0; }
+  /* Ikon jempol besar di bawah tengah */
+  .jempol{ display:flex; flex-direction:column; align-items:center; gap:6px; margin:16px auto 2px; }
+  .jempol svg{ width:clamp(84px,18vw,120px); height:clamp(84px,18vw,120px); fill:var(--merah); }
+  .jempol span{ font-size:0.8rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
   .qbox{
     flex:0 0 auto; text-align:center; border:1.5px solid var(--ink); border-radius:12px; padding:12px 14px; background:var(--paper);
   }
@@ -123,10 +131,18 @@
         <div class="l3">Kecamatan Kasomalang, Kabupaten Subang, Provinsi Jawa Barat</div>
       </div>
 
-      <div class="judul-wrap">
-        <div class="judul">Undangan Memberikan Suara</div>
-        <div class="nomor">Nomor: 005/PPKDES-KK/2026</div>
-        <div class="garis-putus"></div>
+      <div class="atas">
+        <div class="qbox">
+          <div class="cap">QR Masuk TPS</div>
+          <div id="qr"></div>
+          <div class="kode mono" id="kodeText">UND-KASOMALANGKULON</div>
+          <div class="cat">Satu QR untuk semua &bull; tanpa nama</div>
+        </div>
+        <div class="judul-wrap">
+          <div class="judul">Undangan Memberikan Suara</div>
+          <div class="nomor">Nomor: 005/PPKDES-KK/2026</div>
+          <div class="garis-putus"></div>
+        </div>
       </div>
 
       <div class="isi">
@@ -152,18 +168,17 @@
       </div>
 
       <div class="bawah">
-        <div class="qbox">
-          <div class="cap">QR Masuk Tempat Pemungutan Suara</div>
-          <div id="qr"></div>
-          <div class="kode mono" id="kodeText">UND-KASOMALANGKULON</div>
-          <div class="cat">Satu QR untuk semua &bull; tanpa perlu nama</div>
-        </div>
         <div class="ttd">
           <div class="tempat">Kasomalang Kulon, 01 November 2026</div>
           <div class="role">Ketua Panitia Pilkades,</div>
           <div class="space"></div>
           <div class="nama">( ............................. )</div>
         </div>
+      </div>
+
+      <div class="jempol">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 0 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
+        <span>Ayo Memilih!</span>
       </div>
 
       <div class="foot">
@@ -182,7 +197,7 @@
     if(typeof QRCode !== "undefined"){
       new QRCode(box, {
         text: SHARED_INVITE,
-        width: 168, height: 168,
+        width: 132, height: 132,
         colorDark: "#111111", colorLight: "#ffffff",
         correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel.M) || 0
       });
