@@ -316,21 +316,24 @@
     border-color:var(--merah);
     box-shadow:0 0 0 3px var(--merah);
   }
-  .pick-box{
-    display:none;
+  .pick-bar{
+    display:block;
     width:100%;
-    margin-top:8px;
-    padding:8px 6px;
+    margin-top:14px;
+    padding:13px 12px;
     border:0;
-    border-radius:9px;
-    background:var(--merah);
+    border-radius:10px;
+    background:#C9C4BB;
     color:#fff;
     font-family:inherit;
     font-weight:800;
-    font-size:clamp(0.56rem,0.78vw,0.76rem);
-    cursor:pointer;
+    font-size:0.95rem;
+    letter-spacing:0.02em;
+    cursor:not-allowed;
+    transition:background .15s ease;
   }
-  .pick-box:active{ transform:translateY(1px); }
+  .pick-bar.armed{ background:var(--merah); cursor:pointer; box-shadow:0 3px 0 #a51422; }
+  .pick-bar.armed:active{ transform:translateY(1px); }
   .btn-biru{ background:#1E5FA8; color:#fff; box-shadow:0 3px 0 #16497f; }
   .btn-biru:hover{ background:#16497f; }
   .btn-abu{ background:#8E8E8E; color:#fff; box-shadow:0 3px 0 #6f6f6f; }
@@ -739,10 +742,11 @@
         Undangan Terverifikasi
       </div>
       <h2>Pilih Salah Satu Calon</h2>
-      <p>Sentuh foto calon untuk menandai (bingkai merah), lalu tekan "Pilih Kandidat Ini" dan konfirmasi.</p>
+      <p>Sentuh kartu calon untuk menandai (bingkai merah), lalu tekan tombol "Pilih Kandidat Ini" di bawah dan konfirmasi.</p>
     </div>
     <div class="kertas-suara">
       <div class="candidates" id="candidateGrid"></div>
+      <button type="button" class="pick-bar" id="pickBar" disabled onclick="pickFromBar()">Pilih Kandidat Ini</button>
     </div>
     <div class="footer-links">
       <button class="btn-ghost" onclick="cancelVoteScreen()">‹ Batal &amp; kembali ke awal</button>
@@ -806,6 +810,7 @@
   }catch(e){ /* ignore */ }
   var USED_CODES_KEY = STORAGE_KEY + "_kode_terpakai";
   var selected = null;
+  var markedCalon = null;
   var countdownTimer = null;
   var currentInviteCode = null;
   var html5QrCodeInstance = null;
@@ -1012,36 +1017,27 @@
       hint.className = "tap-hint";
       hint.textContent = "Sentuh untuk menandai";
 
-      var pickBox = document.createElement("button");
-      pickBox.type = "button";
-      pickBox.className = "pick-box";
-      pickBox.textContent = "Pilih Kandidat Ini";
-      pickBox.addEventListener("click", function(e){
-        e.stopPropagation();
-        openConfirm(c);
-      });
-
       card.appendChild(badge);
       card.appendChild(fotoWrap);
       card.appendChild(nama);
       card.appendChild(moto);
       card.appendChild(hint);
-      card.appendChild(pickBox);
 
       function markMe(){
+        var wasMarked = card.classList.contains("marked");
         document.querySelectorAll(".candidate-card.marked").forEach(function(x){
-          if(x !== card){
-            x.classList.remove("marked");
-            var pb = x.querySelector(".pick-box");
-            if(pb) pb.style.display = "none";
-          }
+          x.classList.remove("marked");
         });
-        var on = card.classList.toggle("marked");
-        pickBox.style.display = on ? "block" : "none";
+        if(!wasMarked){
+          card.classList.add("marked");
+          markedCalon = c;
+        }else{
+          markedCalon = null;
+        }
+        updatePickBar();
       }
       card.addEventListener("click", markMe);
       card.addEventListener("keydown", function(e){
-        if(e.target === pickBox) return;
         if(e.key === "Enter" || e.key === " "){ e.preventDefault(); markMe(); }
       });
 
@@ -1069,12 +1065,23 @@
     document.getElementById("confirmOverlay").classList.add("show");
   }
 
+  function updatePickBar(){
+    var bar = document.getElementById("pickBar");
+    if(!bar) return;
+    if(markedCalon){ bar.classList.add("armed"); bar.disabled = false; }
+    else { bar.classList.remove("armed"); bar.disabled = true; }
+  }
+
+  window.pickFromBar = function(){
+    if(markedCalon){ openConfirm(markedCalon); }
+  };
+
   function clearMarks(){
+    markedCalon = null;
     document.querySelectorAll(".candidate-card.marked").forEach(function(x){
       x.classList.remove("marked");
-      var pb = x.querySelector(".pick-box");
-      if(pb) pb.style.display = "none";
     });
+    updatePickBar();
   }
 
   window.cancelVote = function(){
