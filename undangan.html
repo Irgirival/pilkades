@@ -80,7 +80,7 @@
   .atas .judul-wrap{ flex:1; margin:0; }
   /* Tempat cap ibu jari (sidik jari tinta) di bawah tengah */
   .jempol{ display:flex; flex-direction:column; align-items:center; gap:6px; margin:16px auto 2px; }
-  .jempol svg{ width:clamp(92px,20vw,128px); height:auto; transform:rotate(-4deg); }
+  .jempol img{ width:clamp(92px,20vw,128px); height:auto; display:block; }
   .jempol span{ font-size:0.8rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
   .qbox{
     flex:0 0 auto; text-align:center; border:1.5px solid var(--ink); border-radius:12px; padding:12px 14px; background:var(--paper);
@@ -177,19 +177,7 @@
       </div>
 
       <div class="jempol">
-        <svg viewBox="0 0 120 150" aria-hidden="true">
-          <g fill="none" stroke="#2456A6" stroke-width="3" stroke-linecap="round" opacity="0.85">
-            <ellipse cx="60" cy="75" rx="42" ry="58" stroke-dasharray="30 7 55 9 26 6"/>
-            <ellipse cx="60" cy="75" rx="34" ry="48" stroke-dasharray="24 6 40 8 30 5" transform="rotate(-2 60 75)"/>
-            <ellipse cx="60" cy="75" rx="26" ry="38" stroke-dasharray="18 5 30 7 22 6" transform="rotate(2 60 75)"/>
-            <ellipse cx="60" cy="75" rx="18" ry="28" stroke-dasharray="14 5 20 6 16 4"/>
-            <path d="M48 92 C46 78 52 66 60 66 C68 66 74 78 72 92"/>
-            <path d="M53 88 C52 78 56 71 60 71 C64 71 68 78 67 88"/>
-            <path d="M56 84 C56 78 58 75 60 75 C62 75 64 78 64 84"/>
-            <path d="M40 108 C46 102 50 98 52 92"/>
-            <path d="M34 112 C42 104 48 100 50 94"/>
-          </g>
-        </svg>
+        <img src="jempol.webp" alt="Ibu jari">
         <span>Letakkan Ibu Jari di Sini</span>
       </div>
 
