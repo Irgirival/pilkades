@@ -1,0 +1,108 @@
+/* ============================================================
+   MAINTENANCE BERSAMA — dipakai index.html, undangan.html,
+   hasil-pilkades.html, dan beat.html.
+   Menutupi seluruh tampilan lama dengan layar maintenance.
+   ============================================================ */
+
+/* Sembunyikan semua elemen lama di bawah body */
+body > *:not(#maint){ display:none !important; }
+html, body{ height:100%; margin:0; overflow:hidden; }
+
+#maint{
+  position:fixed; inset:0; z-index:9999;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:18px; padding:24px 16px; overflow-y:auto;
+  background:
+    radial-gradient(900px 420px at 85% -10%, rgba(201,162,39,0.18), transparent 60%),
+    radial-gradient(700px 400px at -10% 110%, rgba(158,27,38,0.22), transparent 55%),
+    linear-gradient(165deg, #2A211B 0%, #1c1611 100%);
+  color:#F5EEDF;
+  font-family:"Plus Jakarta Sans","Public Sans",system-ui,sans-serif;
+  animation: maint-muncul .45s ease both;
+}
+@keyframes maint-muncul{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:none;} }
+
+.maint-card{
+  max-width:560px; width:100%; text-align:center;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:22px; padding:30px 24px 26px;
+  box-shadow:0 18px 50px rgba(0,0,0,0.35);
+  animation: maint-kartu .55s .1s ease both;
+}
+@keyframes maint-kartu{ from{opacity:0; transform:scale(.96) translateY(10px);} to{opacity:1; transform:none;} }
+
+.maint-emoji{ font-size:3.2rem; line-height:1; animation: maint-kunci 2.6s ease-in-out infinite; display:inline-block; }
+@keyframes maint-kunci{ 0%,100%{ transform:rotate(-12deg);} 50%{ transform:rotate(14deg) scale(1.08);} }
+
+.maint-kop{ font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; opacity:.7; margin:10px 0 4px; }
+.maint-card h1{ font-size:clamp(1.5rem,5vw,2.2rem); margin:0 0 12px; font-weight:800; color:#fff; }
+
+.maint-status{ display:inline-flex; align-items:center; gap:8px; font-size:.8rem; font-weight:700;
+  background:rgba(201,162,39,.14); border:1px solid rgba(201,162,39,.4); color:#F1D98A;
+  padding:6px 14px; border-radius:999px; margin:0 0 14px; }
+.blink{ width:10px; height:10px; border-radius:50%; background:#7CCB7C; animation: maint-blip 1.2s ease-in-out infinite; }
+@keyframes maint-blip{ 0%,100%{ box-shadow:0 0 0 0 rgba(124,203,124,.55);} 50%{ box-shadow:0 0 0 7px rgba(124,203,124,0);} }
+
+.maint-cerita{ font-size:.95rem; line-height:1.65; margin:0 0 8px; }
+.maint-kecil{ font-size:.75rem; opacity:.65; margin:0 0 18px; }
+
+.maint-btn{
+  font:inherit; font-weight:800; font-size:1rem; cursor:pointer;
+  color:#241F17; background:linear-gradient(160deg,#F1D98A,#C9A227);
+  border:0; border-radius:14px; padding:13px 26px;
+  box-shadow:0 5px 0 #8a6d14, 0 12px 26px rgba(0,0,0,.35);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.maint-btn:hover{ transform:translateY(-2px); }
+.maint-btn:active{ transform:translateY(2px); box-shadow:0 2px 0 #8a6d14; }
+
+/* ---------- ticker berjalan ---------- */
+.maint-ticker{
+  position:absolute; left:0; right:0; bottom:0;
+  overflow:hidden; white-space:nowrap;
+  background:rgba(158,27,38,.5); border-top:1px solid rgba(255,255,255,.12);
+  font-size:.72rem; font-weight:700; letter-spacing:.04em; color:#FBEFD9;
+  padding:7px 0;
+}
+.tick-in{ display:inline-block; animation: maint-jalan 26s linear infinite; }
+@keyframes maint-jalan{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
+
+/* ---------- dialog QRIS ---------- */
+#qrisDlg{
+  position:fixed; inset:0; z-index:10;
+  display:flex; align-items:center; justify-content:center; padding:18px;
+  background:rgba(15,11,7,.66);
+  animation: maint-fade .18s ease both;
+}
+#qrisDlg[hidden]{ display:none; }
+@keyframes maint-fade{ from{opacity:0;} to{opacity:1;} }
+
+.qris-box{
+  position:relative; width:100%; max-width:340px; text-align:center;
+  background:#FBF6EE; color:#2A211B; border-radius:18px; padding:20px 20px 16px;
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
+  animation: maint-pop .22s ease both;
+}
+@keyframes maint-pop{ from{opacity:0; transform:scale(.9);} to{opacity:1; transform:scale(1);} }
+.qris-box h2{ font-size:1.05rem; margin:0 0 12px; }
+.qris-box img{ display:block; width:100%; height:auto; border:1px solid #E4D8C6; border-radius:12px; background:#fff; }
+.qris-box p{ font-size:.75rem; color:#6B5D52; margin:10px 0 0; }
+.qris-close{
+  position:absolute; top:10px; right:10px; width:32px; height:32px;
+  border:0; border-radius:50%; cursor:pointer; font-size:.9rem; font-weight:800;
+  background:#2A211B; color:#fff;
+}
+.qris-close:hover{ background:#9E1B26; }
+
+/* ---------- hormati prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  #maint, .maint-card, .maint-emoji, .blink, .tick-in, #qrisDlg, .qris-box, .maint-btn{
+    animation:none !important; transition:none !important;
+  }
+}
+
+@media (max-width:420px){
+  .maint-card{ padding:22px 16px 20px; }
+  .maint-emoji{ font-size:2.6rem; }
+}
