@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="maintenance.css">
+<script src="maintenance.js" defer></script>
 <style>
   /* ============================================================
      DATA CALON — EDIT DI SINI SESUAI PENETAPAN RESMI PANITIA
@@ -678,6 +680,28 @@
 </style>
 </head>
 <body>
+<!-- ===== Layar maintenance (bersama: maintenance.css + maintenance.js) ===== -->
+<div id="maint">
+  <div class="maint-card">
+    <span class="maint-emoji">🛠️</span>
+    <p class="maint-kop">Panitia Pilkades Digital &middot; Kasomalang Kulon 2026</p>
+    <h1>Sedang Maintenance</h1>
+    <p class="maint-status"><span class="blink"></span> Status: bertahan dengan modal nekat</p>
+    <p class="maint-cerita">Niat panitia sih <b>serba digital</b> — undangan, coblosan, resi cetak, sampai rekap langsung.
+      Realitanya: server nombok sendiri, kuota fotokopi jalan terus, belum sepeser pun bayaran — apalagi traktiran. 😅</p>
+    <p class="maint-kecil">Fitur lama tidak dihapus, cuma lagi disuruh istirahat. Selesai maintenance, balik normal lagi!</p>
+    <button type="button" id="qrisOpen" class="maint-btn">💚 Traktir Panitia via QRIS</button>
+  </div>
+  <div class="maint-ticker"><div class="tick-in"><span>★ dukungan seikhlasnya lewat QRIS ★ fotokopi undangan ditanggung panitia ★ printer thermal bertahan atas nama harga diri ★ panitia masih sehat (katanya) ★ scan QRIS kalau ikhlas ★ doa restu warga juga berharga ★ </span><span aria-hidden="true">★ dukungan seikhlasnya lewat QRIS ★ fotokopi undangan ditanggung panitia ★ printer thermal bertahan atas nama harga diri ★ panitia masih sehat (katanya) ★ scan QRIS kalau ikhlas ★ doa restu warga juga berharga ★ </span></div></div>
+  <div id="qrisDlg" hidden>
+    <div class="qris-box" role="dialog" aria-modal="true" aria-label="QRIS dukungan panitia">
+      <button type="button" class="qris-close" aria-label="Tutup">✕</button>
+      <h2>Scan QRIS Dukungan</h2>
+      <img src="qris1.jpg" alt="Kode QRIS untuk mendukung panitia Pilkades Kasomalang Kulon">
+      <p>Nominal bebas, seikhlasnya. Berapapun masuk, semangat panitia naik 200%.</p>
+    </div>
+  </div>
+</div>
 
 <button class="fs-float" id="fsToggle" title="Layar penuh" aria-label="Aktifkan layar penuh">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
